@@ -1,0 +1,733 @@
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url('../fonts/SF-Pro-Display-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #F07324, #F9F8F2);
+    width: 0%;
+    z-index: 9999;
+    transition: width 0.1s ease;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ed955f;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #F07324;
+    width: 15px;
+}
+
+
+::-webkit-scrollbar-track {
+    background-color: #F9F8F2;
+}
+
+.navbar-profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover; /* Ensures the image is not distorted */
+    vertical-align: middle;
+}
+
+
+/* -----------------------------------------------------GENERAL---------------------------------------------------------------*/
+body {
+    font-family: 'SF Pro Display', sans-serif;
+    color: #2E2E2E;
+    background-color: #F9F8F2;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+html, body {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/*-----------------------------------------------------------RESPONSIVE DESIGN FOR NAVBAR-----------------------------------------*/
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+    .logo {
+        padding-left: 0;
+
+    }
+
+    .button-con {
+        margin-top: 10px;
+
+    }
+
+    .login-button,
+    .partner-button {
+        margin-right: 10px;
+
+    }
+}
+
+/*----------------------------------------------------------------------NAVBAR----------------------------------------------------*/
+.navbar {
+    background-color: #F07324;
+    height: 1.3in;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    justify-content: space-between;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+
+}
+
+.navbar-logo {
+    width: 110px; 
+    height: auto; 
+    transition: width 0.3s ease, height 0.3s ease;
+    padding-left: 120px;
+   
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar a {
+    color: #F9F8F2;
+    text-decoration: none;
+    padding: 0 1rem;
+    font-weight: normal;
+    transition: font-weight 0.3s ease;
+}
+
+.logo img {
+    height: 70px;
+    padding-left: 80px;
+    width: auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-left: 80px;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    padding-left: 80px;
+    line-height: 1;
+    margin: 5px 0 0 0;
+}
+
+
+/*-----------------------------------------------------------------BUTTON OF NAVBAR---------------------------------------------*/
+.btn-partner, .btn-bookings {
+    font-family: 'SF Pro Display', sans-serif;
+    background-color: #F9F8F2;
+    color: #F07324;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 10px;
+    margin-right: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 15px;
+    height: 50px;
+    width: 200px;
+    font-weight: normal;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.btn-client{
+    font-family: 'SF Pro Display', sans-serif;
+    background-color: #F9F8F2;
+    color: #2E2E2E;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 10px; 
+    margin-right: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 15px;
+    height: 50px;
+    width: 200px;
+    font-weight: normal;
+   
+}
+.btn-client i {
+    margin-right: 10px; 
+}
+
+.btn-partner:hover, .btn-bookings:hover  {
+    background-color: transparent;
+    color: #F9F8F2;
+    border: 1px solid #F9F8F2;
+    font-weight: bold;
+}
+
+.btn-text {
+    font-family: 'SF Pro Display', sans-serif;
+    color: #F9F8F2;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    margin-right: 0;
+    font-size: 16px;
+    border-radius: 15px;
+    font-weight: normal;
+}
+
+.btn-text:hover {
+    font-weight: bold;
+}
+
+.btn-client-login  {
+    font-family: 'SF Pro Display', sans-serif;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 10px;
+    margin-right: 50px;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 15px;
+    height: 50px;
+    width: 120px;
+    font-weight: normal;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-client-login a{
+    color: #F07324;
+}
+
+.btn-client-login a:hover {
+    background-color: transparent;
+    color: #F07324;
+    border: 1px solid #F9F8F2;
+    font-weight: bold;
+}
+
+/*-----------------------------------------------------SIDEBAR-------------------------------------------------------------------*/
+.sidebar {
+    background-color: rgba(249, 248, 242, 0.8);
+    width: 60px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: width 0.3s ease;
+    padding: 50px 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+}
+
+
+/* --------------------------------------------------------------------EXPANDING SIDEBAR-------------------------------------- */
+.sidebar.expanded {
+    width: 240px;
+    background-color: rgba(249, 248, 242, 0.8);
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+    width: 100%;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    color: #2E2E2E;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 12px 15px;
+    white-space: nowrap;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+    border-radius: 8px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #F9F8F2;
+    box-shadow: #C6C5C0;
+}
+
+.sidebar ul li i {
+    font-size: 28px;
+    transition: font-size 0.3s ease;
+    margin-right: 2px;
+}
+
+
+.sidebar ul li a span {
+    display: none;
+    margin-left: 2px;
+}
+
+.sidebar.expanded ul li a span {
+    display: inline-block;
+}
+
+.sidebar.expanded ul li i {
+    font-size: 32px;
+}
+
+
+#menu-icon {
+    font-size: 32px;
+    color: #2E2E2E;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+}
+
+.menu-text {
+    display: none;
+    margin-left: 15px;
+    font-weight: bold;
+    font-size: 35px;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.sidebar.expanded .menu-text {
+    display: inline-block;
+    opacity: 1;
+    color: #2E2E2E;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------RESPONSIVE DESIGN FOR SIDEBAR------------------------------------------- */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 50px;
+    }
+
+    .sidebar.expanded {
+        width: 200px;
+    }
+
+    #menu-icon {
+        font-size: 24px;
+    }
+
+    .sidebar ul li a {
+        font-size: 16px;
+    }
+
+    .sidebar ul li i {
+        font-size: 24px;
+    }
+
+    .menu-text {
+        font-size: 16px;
+    }
+}
+
+
+/*---------------------------------------------------------- CONTACT US ---------------------------------------------------*/
+.contactus {
+    position: relative;
+    background: url('../img/contactus1.png') no-repeat center center/cover;
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+}
+
+.contactus::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent overlay */
+}
+
+.contactus h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #F9F8F2;
+    font-weight: bold;
+    text-align: center;
+    font-size: 6vw; /* Responsive font size */
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contactus {
+        height: 100vh; /* Reduce height for smaller screens */
+    }
+
+    .contactus h1 {
+        font-size: 8vw; /* Adjust font size for tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .contactus h1 {
+        font-size: 10vw; /* Adjust font size for mobile devices */
+    }
+}
+
+/*---------------------------------------------------------- TWO IMAGES ---------------------------------------------------*/
+.image-container {
+    display: flex;
+    justify-content: center;
+    gap: 10%; /* Adjusted gap for smaller screens */
+    margin-top: 5%;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+.image-item {
+    text-align: center;
+    flex: 1 1 calc(33.333% - 20px); /* Allow 3 items per row with a small margin */
+    max-width: calc(33.333% - 20px); /* Restrict max width to align with flex */
+    margin: 10px; /* Add spacing around items */
+}
+
+.image-item img {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-item p {
+    margin-top: 10px;
+    font-size: 18px; /* Slightly smaller for better readability */
+    color: #2e2e2e;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .image-item {
+        flex: 1 1 calc(50% - 20px); /* 2 items per row for tablets */
+        max-width: calc(50% - 20px);
+    }
+
+    .image-item p {
+        font-size: 16px; /* Adjust font size for tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .image-item {
+        flex: 1 1 100%; /* 1 item per row for small screens */
+        max-width: 100%;
+    }
+
+    .image-item p {
+        font-size: 14px; /* Adjust font size for mobile devices */
+    }
+}
+
+/*---------------------------------------------------------- SEND EMAILS ---------------------------------------------------*/
+.send-emails {
+    margin: 2% auto;
+    padding: 30px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 900px;
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.send-emails h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #f07324;
+    font-weight: bold;
+}
+
+.send-emails p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #555;
+    text-align: center;
+}
+
+.form-group-container {
+    display: flex;
+    flex-wrap: wrap; /* Wrap inputs on smaller screens */
+    gap: 20px; /* Spacing between inputs */
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1 1 calc(50% - 20px); /* Two inputs per row with space */
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #f07324;
+}
+
+textarea {
+    resize: none;
+    height: 150px;
+    margin-bottom: 10px;
+    font-family: 'SF Pro Display', sans-serif;
+}
+
+button {
+    padding: 12px 20px;
+    background: #f07324;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .form-group {
+        flex: 1 1 100%; /* Full width for inputs on smaller screens */
+    }
+}
+
+
+/*----------------------------------------------------------------VIDEO2----------------------------------------------------*/
+.video2 {
+    position: relative;
+    width: 100%;
+    padding-top: 0.5in; /* Default padding for larger screens */
+}
+
+.video2 video {
+    width: 100%; /* Ensure the video scales to the container */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 100vh; /* Prevent the video from taking too much vertical space */
+    display: block;
+    object-fit: cover; /* Cover the container without distortion */
+}
+
+@media (max-width: 768px) {
+    .video2 {
+        padding-top: 0.3in; /* Reduce padding for medium devices */
+    }
+
+    .video2 video {
+        max-height: 60vh; /* Limit video height for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .video2 {
+        padding-top: 0.2in; /* Further reduce padding for small devices */
+    }
+
+    .video2 video {
+        max-height: 50vh; /* Restrict video height for very small devices */
+    }
+}
+
+/*----------------------------------------------------------------FOOTER----------------------------------------------------*/
+.footer {
+    background-color: #F07324;
+    color: #fff;
+    text-align: left;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    margin: 0;
+    padding: 20px;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap; /* Allows sections to wrap on smaller screens */
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+}
+
+.footer-section {
+    flex: 1 1 300px; /* Sections take up full width on smaller screens */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 30px; /* Adjust the horizontal margin to move it more to the right */
+    padding-left: 50px; /* Add padding on the left for additional spacing */
+}
+
+.footer-logo {
+    width: 120px; /* Adjusted for smaller screens */
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 16px;
+    gap: 10px; /* Adds spacing between links */
+}
+
+.footer-link, 
+.payment-method-link {
+    color: #F9F8F2;
+    text-decoration: none;
+    font-size: 16px; /* Adjust font size for smaller screens */
+}
+
+.footer-link:hover, 
+.payment-method-link:hover {
+    font-weight: bold;
+}
+
+.footer-line {
+    border: none;
+    border-top: 1px solid #fff;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.footer-bottom-links {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping for small screens */
+    gap: 10px;
+    justify-content: center; /* Center-align on smaller screens */
+    padding: 10px;
+}
+
+.footer-bottom-link {
+    color: #F9F8F2;
+    text-decoration: none;
+    font-size: 14px; /* Smaller font for small screens */
+}
+
+.footer-social-media {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.social-media-link i {
+    font-size: 20px; /* Smaller icon size */
+    color: #F9F8F2;
+}
+
+.social-media-link:hover i {
+    color: #90C6AA;
+}
+
+.footer-social-media p {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .footer-content {
+        padding: 10px;
+    }
+
+    .footer-section {
+        flex: 1 1 100%; /* Full width for each section */
+    }
+
+    .footer-links, 
+    .footer-bottom-links {
+        text-align: center; /* Center-align links on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-logo {
+        width: 100px; /* Smaller logo for very small screens */
+    }
+
+    .footer-link, 
+    .payment-method-link, 
+    .footer-bottom-link {
+        font-size: 14px; /* Smaller font size */
+    }
+
+    .social-media-link i {
+        font-size: 18px; /* Smaller icons */
+    }
+
+    .footer-social-media p {
+        font-size: 12px; /* Smaller text */
+    }
+}

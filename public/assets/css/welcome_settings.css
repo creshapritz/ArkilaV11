@@ -1,0 +1,922 @@
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url('../fonts/SF-Pro-Display-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #F07324, #F9F8F2);
+    width: 0%;
+    z-index: 9999;
+    transition: width 0.1s ease;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ed955f;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #F07324;
+    width: 15px;
+}
+
+
+::-webkit-scrollbar-track {
+    background-color: #F9F8F2;
+}
+
+
+
+
+/* -----------------------------------------------------GENERAL---------------------------------------------------------------*/
+body {
+    font-family: 'SF Pro Display', sans-serif;
+    color: #2E2E2E;
+    background-color: #F9F8F2;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    overflow-y: hidden;
+    /* Prevent horizontal scrolling */
+}
+
+/*-----------------------------------------------------------RESPONSIVE DESIGN FOR NAVBAR-----------------------------------------*/
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+    }
+
+    .logo {
+        padding-left: 0;
+
+    }
+
+    .button-con {
+        margin-top: 10px;
+
+    }
+
+    .login-button,
+    .partner-button {
+        margin-right: 10px;
+
+    }
+}
+
+/*----------------------------------------------------------------------NAVBAR----------------------------------------------------*/
+.navbar {
+    background-color: #F07324;
+    height: 1.3in;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    justify-content: space-between;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+
+}
+
+.navbar-logo {
+    width: 110px;
+    height: auto;
+    transition: width 0.3s ease, height 0.3s ease;
+    padding-left: 120px;
+
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar a {
+    color: #F9F8F2;
+    text-decoration: none;
+    padding: 0 1rem;
+    font-weight: normal;
+    transition: font-weight 0.3s ease;
+}
+
+.logo img {
+    height: 70px;
+    padding-left: 80px;
+    width: auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-left: 80px;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    padding-left: 80px;
+    line-height: 1;
+    margin: 5px 0 0 0;
+}
+
+
+/*-----------------------------------------------------------------BUTTON OF NAVBAR---------------------------------------------*/
+.btn-partner,
+.btn-bookings {
+    font-family: 'SF Pro Display', sans-serif;
+    background-color: #F9F8F2;
+    color: #F07324;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 10px;
+    margin-right: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 15px;
+    height: 50px;
+    width: 200px;
+    font-weight: normal;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-client {
+    font-family: 'SF Pro Display', sans-serif;
+    background-color: #F9F8F2;
+    color: #2E2E2E;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 10px;
+    margin-right: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 15px;
+    height: 50px;
+    width: 200px;
+    font-weight: normal;
+    
+}
+
+.btn-client i {
+    margin-right: 10px;
+}
+
+.btn-partner:hover,
+.btn-bookings:hover {
+    background-color: transparent;
+    color: #F9F8F2;
+    border: 1px solid #F9F8F2;
+    font-weight: bold;
+}
+
+.btn-text {
+    font-family: 'SF Pro Display', sans-serif;
+    color: #F9F8F2;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    margin-right: 0;
+    font-size: 16px;
+    border-radius: 15px;
+    font-weight: normal;
+}
+
+.btn-text:hover {
+    font-weight: bold;
+}
+
+.btn-client-login {
+    font-family: 'SF Pro Display', sans-serif;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 10px;
+    margin-right: 50px;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 15px;
+    height: 50px;
+    width: 120px;
+    font-weight: normal;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-client-login a {
+    color: #F07324;
+}
+
+.btn-client-login a:hover {
+    background-color: transparent;
+    color: #F07324;
+    border: 1px solid #F9F8F2;
+    font-weight: bold;
+}
+
+/*-----------------------------------------------------SIDEBAR-------------------------------------------------------------------*/
+.sidebar {
+    background-color: rgba(249, 248, 242, 0.8);
+    width: 60px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: width 0.3s ease;
+    padding: 50px 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+}
+
+
+/* --------------------------------------------------------------------EXPANDING SIDEBAR-------------------------------------- */
+.sidebar.expanded {
+    width: 240px;
+    background-color: rgba(249, 248, 242, 0.8);
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+    width: 100%;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    color: #2E2E2E;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 12px 15px;
+    white-space: nowrap;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+    border-radius: 8px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #F9F8F2;
+    box-shadow: #C6C5C0;
+}
+
+.sidebar ul li i {
+    font-size: 28px;
+    transition: font-size 0.3s ease;
+    margin-right: 2px;
+}
+
+
+.sidebar ul li a span {
+    display: none;
+    margin-left: 2px;
+}
+
+.sidebar.expanded ul li a span {
+    display: inline-block;
+}
+
+.sidebar.expanded ul li i {
+    font-size: 32px;
+}
+
+
+#menu-icon {
+    font-size: 32px;
+    color: #2E2E2E;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+}
+
+.menu-text {
+    display: none;
+    margin-left: 15px;
+    font-weight: bold;
+    font-size: 35px;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.sidebar.expanded .menu-text {
+    display: inline-block;
+    opacity: 1;
+    color: #2E2E2E;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------RESPONSIVE DESIGN FOR SIDEBAR------------------------------------------- */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 50px;
+    }
+
+    .sidebar.expanded {
+        width: 200px;
+    }
+
+    #menu-icon {
+        font-size: 24px;
+    }
+
+    .sidebar ul li a {
+        font-size: 16px;
+    }
+
+    .sidebar ul li i {
+        font-size: 24px;
+    }
+
+    .menu-text {
+        font-size: 16px;
+    }
+}
+
+/* ---------------------------------------------------IMAGE1------------------------------------------- */
+.navbar-image {
+    position: relative;
+    background: url('../img/vehicles.jpg') no-repeat center center;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+
+}
+
+.navbar-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Black shadow overlay with 50% opacity */
+    z-index: 1;
+    /* Make sure the overlay appears above the background but below the content */
+}
+
+
+.navbar-content h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #F9F8F2;
+    font-weight: bold;
+    font-size: 100px;
+    margin: 0;
+    text-shadow: 2px 2px 4px #000000;
+    text-align: center;
+    z-index: 2;
+    /* Ensure the text appears above the overlay */
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .navbar-content h1 {
+        font-size: 80px;
+        /* Smaller font size for medium screens */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .navbar-content h1 {
+        font-size: 60px;
+        /* Smaller font size for tablets */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .navbar-content h1 {
+        font-size: 40px;
+        /* Smaller font size for mobile screens */
+    }
+}
+
+
+
+
+/* --------------------------------------------------- */
+.settings-container {
+    display: flex;
+    margin: 20px;
+    padding: 20px;
+    height: calc(100vh - 100px);
+    margin-left: 80px;
+    gap: 20px;
+    flex-wrap: wrap;
+    
+    
+}
+
+.settings-sidebar {
+    position: fixed;
+    width: 240px;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    top: 110px;
+    height: calc(100vh - 80px);
+    border-radius: 12px;
+}
+
+.settings-btn {
+    color: #2E2E2E;
+    background-color: white;
+    border: none;
+    margin-top: 5px;
+    border-radius: 8px;
+    padding: 16px 15px;
+    text-align: left;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.settings-btn:hover {
+    background-color: #e5e5e5;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .settings-container {
+        flex-direction:column-reverse;
+        padding: 50px;
+       
+    }
+
+    .settings-sidebar {
+        position: absolute;
+      height: 10px;
+        margin-top: 10px;
+       
+        box-shadow: none;
+        background-color: transparent;
+    }
+
+    .settings-btn {
+        flex: 1 1 45%;
+        text-align: center;
+        background-color: #F07324;
+        color: white;
+        font-size: 14px;
+    }
+
+    .settings-btn:hover {
+        background-color: #e55b12;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-btn {
+        flex: 1 1 100%;
+    }
+}
+.settings-btn:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+
+
+
+/* ---------------------------------------------------- */
+
+
+.profile-management {
+    flex-grow: 1;
+    width: 80%;
+    max-width: 900px;
+    padding: 70px 30px 20px;
+    margin: 70px 20px 20px auto;
+    height: calc(100vh - 180px);
+    overflow-y: auto;
+}
+
+.profile-management h2 {
+    font-size: 24px;
+    color: #F07324;
+}
+
+/* Profile Picture Container */
+.profile-picture-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+}
+
+#change-pic-btn {
+    padding: 10px 12px;
+    background-color: transparent;
+    color: #2E2E2E;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-profile-pic {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+    object-fit: cover;
+}
+
+
+
+
+
+/* Profile Form Styling */
+.profile-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Two-column layout */
+    gap: 20px;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.profile-form input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    font-size: 'SF Pro Display', sans-serif;
+}
+
+.profile-form input:focus {
+    outline: none;
+    border-color: #F07324;
+    background-color: #fff;
+
+}
+
+.profile-form input[type="date"] {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    cursor: pointer;
+    font-size: 'SF Pro Display', sans-serif;
+}
+
+.profile-form input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 'SF Pro Display', sans-serif;
+}
+
+
+
+.save-btn {
+    right: 20px;
+    bottom: 20px;
+    padding: 12px;
+    background-color: transparent;
+    width: 250px;
+    color: #90C6AA;
+    border: 1.5px solid #90C6AA;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+    background-color: #90C6AA;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+
+
+@media (max-width: 768px) {
+    .profile-form {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-management {
+        margin-left: 0;
+    }
+}
+
+/* Emergency Contact Section */
+.emergency-contact-section {
+    grid-column: span 2;
+}
+
+.emergency-contact-section h2 {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #F07324;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* Emergency Contact Form Rows */
+.emergency-contact-row {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+/* Input Fields Styling */
+.emergency-contact-row input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    max-width: 420px;
+}
+
+.emergency-contact-row input:focus {
+    outline: none;
+    border-color: #F07324;
+    background-color: #fff;
+}
+
+/* Adjustments for Date Input */
+.emergency-contact-row input[type="date"] {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+    cursor: pointer;
+}
+
+.emergency-contact-row input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.navbar-profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+    /* Ensures the image is not distorted */
+    vertical-align: middle;
+}
+
+.navbar-profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+    /* Ensures the image is not distorted */
+    vertical-align: middle;
+}
+
+.update-info-note {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.update-info-note a {
+    color: #F07324;
+    text-decoration: none;
+}
+
+.update-info-note a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+    .profile-management {
+        padding: 50px 20px;
+        margin-top: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-management {
+       
+        margin-top: 500px !important;
+       
+        width: 100%;
+    }
+
+    .profile-picture-container {
+        margin-bottom: 15px;
+    }
+
+    .profile-form {
+        grid-template-columns: 1fr;
+    }
+
+    .emergency-contact-section {
+        grid-column: span 1;
+    }
+
+    .save-btn {
+        width: 100%;
+    }
+}
+
+/* -------------------------------------------------------------ACCOUNT ACTIVITY-------------------------------------------------------------- */
+
+.grid-container {
+    margin-left: 30%;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.account-activity {
+    width: 150%;
+    max-width: 900px;
+    grid-column: span 8;
+    grid-row: 1;
+    margin: auto;
+    padding: 20px;
+    background: #F9F9F2;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow-x: auto;
+}
+
+.account-activity h2 {
+    margin: 0 0 20px;
+    font-size: 1.8rem;
+    color: #F07324;
+}
+
+.account-activity table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    min-width: 600px; /* Ensures it scrolls horizontally on small screens */
+}
+
+.account-activity table thead {
+    background-color: #F07324;
+    color: #F9F9F2;
+}
+
+.account-activity table th,
+.account-activity table td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #C1C1BF;
+}
+
+
+.account-activity table tbody tr:nth-child(odd) {
+    background-color: #F9F9F2;
+}
+
+.account-activity table tbody tr:nth-child(even) {
+    background-color: #F9F9F2
+}
+
+.account-activity table tbody tr:hover {
+    background-color: #F9F9F2;
+}
+
+.action-button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    color: white;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.action-button:disabled {
+    background-color: #6c757d;
+}
+
+.status-active {
+    color: green;
+    font-weight: bold;
+}
+
+.status-inactive {
+    color: red;
+    font-weight: bold;
+}
+
+
+/* ✅ Responsive adjustments */
+@media (max-width: 1024px) {
+    .grid-container {
+        margin-left: 0;
+        grid-template-columns: 1fr;
+        padding: 30px 20px;
+    }
+
+    .account-activity {
+        width: 100%;
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 768px) {
+    .account-activity {
+        padding: 15px;
+    }
+
+    .account-activity h2 {
+        font-size: 1.5rem;
+    }
+
+    .account-activity table {
+        font-size: 0.85rem;
+    }
+}
+
+
+/* -------------------------Privacy and Security------------------------------------- */

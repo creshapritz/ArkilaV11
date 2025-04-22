@@ -1,0 +1,194 @@
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url('../fonts/SF-Pro-Display-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    font-family: 'SF Pro Display';
+    position: relative;
+}
+
+.left-side {
+    width: 50%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #F9F8F2;
+}
+
+.left-side h2 {
+    font-size: 60px;
+    margin-bottom: 10px;
+    text-align: center;
+    position: relative;
+    margin-top: 40px;
+}
+
+.left-side p {
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.left-side h2 span {
+    color: #F07324;
+    position: relative;
+}
+
+.left-side h2 span::before {
+    content: "";
+    right: -8px;
+    top: 50%;
+    position: absolute;
+    width: 2px;
+    height: 1em;
+    background-color: #F07324;
+    transform: translateY(-50%);
+    animation: blink 0.7s infinite;
+
+}
+.left-side h2 span.stop-blinking::before{
+    animation: none;
+}
+@keyframes blink {
+    50%{
+        opacity: 0;
+    }
+    
+}
+.left-side,
+.right-side {
+    position: relative; /* Prevent displacement */
+    z-index: 1; /* Ensure content isn't affected by backdrop */
+}
+
+.left-side form {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.right-side {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: url('/assets/img/background1.png') no-repeat center center;
+    background-size: cover;
+    position: relative;
+}
+
+.right-side .logo-top {
+    width: 100px;
+    margin-bottom: 10px;
+    margin-top: 50px;
+}
+
+.right-side-text {
+    font-size: 18px;
+    color: white;
+    margin-top: 10px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 40px 12px 12px;
+    border: 1px solid #2E2E2E;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.form-group a {
+    width: 100%;
+    text-align: left;
+    color: #F07324;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.login-button {
+    width: 100%;
+    max-width: 350px;
+    padding: 15px;
+    background-color: #F07324;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #c64f07;
+    ;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    width: 100%;
+    padding: 12px 40px 12px 12px;
+    border: 1px solid #2E2E2E;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.password-container i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(20%);
+    cursor: pointer;
+}
+
+.password-container i:hover {
+    color: #F07324;
+}
+
+
+@media (max-width: 768px) {
+    .right-side {
+        display: none; /* Hides the right-side on small screens */
+    }
+
+    .left-side {
+        width: 100%; /* Expands the left-side to full width */
+    }
+}
+
+
+.forgot-password {
+    width: 100%;
+    text-align: left;
+    color: #F07324;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 15px;
+}

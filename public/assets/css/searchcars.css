@@ -1,0 +1,1180 @@
+html,
+body {
+    overflow-x: hidden;
+}
+
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url('../fonts/SF-Pro-Display-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'SF Pro Display', sans-serif;
+    color: #2E2E2E;
+    background-color: #F9F8F2;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ed955f;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #F07324;
+    width: 15px;
+}
+
+
+::-webkit-scrollbar-track {
+    background-color: #F9F8F2;
+}
+
+/* ---------------------------------------------------- */
+.navbar {
+    background-color: #F07324;
+    height: 1.3in;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    justify-content: space-between;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+
+}
+
+.navbar-logo {
+    width: 110px;
+    height: auto;
+    transition: width 0.3s ease, height 0.3s ease;
+    padding-left: 120px;
+
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar a {
+    color: #F9F8F2;
+    text-decoration: none;
+    padding: 0 1rem;
+    font-weight: normal;
+    transition: font-weight 0.3s ease;
+}
+
+.logo img {
+    height: 70px;
+    padding-left: 80px;
+    width: auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-left: 80px;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    padding-left: 80px;
+    line-height: 1;
+    margin: 5px 0 0 0;
+}
+
+
+/*-----------------------------------------------------------------BUTTON OF NAVBAR---------------------------------------------*/
+.btn-partner,
+.btn-bookings {
+    font-family: 'SF Pro Display', sans-serif;
+    background-color: #F9F8F2;
+    color: #F07324;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 10px;
+    margin-right: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 15px;
+    height: 50px;
+    width: 200px;
+    font-weight: normal;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-client {
+    font-family: 'SF Pro Display', sans-serif;
+    background-color: #F9F8F2;
+    color: #2E2E2E;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 10px;
+    margin-right: 50px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 15px;
+    height: 50px;
+    width: 200px;
+    font-weight: normal;
+    
+}
+
+.btn-client i {
+    margin-right: 10px;
+}
+
+.btn-partner:hover,
+.btn-bookings:hover {
+    background-color: transparent;
+    color: #F9F8F2;
+    border: 1px solid #F9F8F2;
+    font-weight: bold;
+}
+
+.btn-text {
+    font-family: 'SF Pro Display', sans-serif;
+    color: #F9F8F2;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    margin-right: 0;
+    font-size: 16px;
+    border-radius: 15px;
+    font-weight: normal;
+}
+
+.btn-text:hover {
+    font-weight: bold;
+}
+
+.btn-client-login {
+    font-family: 'SF Pro Display', sans-serif;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-left: 10px;
+    margin-right: 50px;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 15px;
+    height: 50px;
+    width: 120px;
+    font-weight: normal;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-client-login a {
+    color: #F07324;
+}
+
+.btn-client-login a:hover {
+    background-color: transparent;
+    color: #F07324;
+    border: 1px solid #F9F8F2;
+    font-weight: bold;
+}
+
+.sidebar {
+    background-color: rgba(249, 248, 242, 0.8);
+    width: 60px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: width 0.3s ease;
+    padding: 50px 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+}
+
+
+/* --------------------------------------------------------------------EXPANDING SIDEBAR-------------------------------------- */
+.sidebar.expanded {
+    width: 240px;
+    background-color: rgba(249, 248, 242, 0.8);
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+    width: 100%;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    color: #2E2E2E;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 12px 15px;
+    white-space: nowrap;
+    transition: background-color 0.3s ease, padding 0.3s ease;
+    border-radius: 8px;
+}
+
+.sidebar ul li a:hover {
+    background-color: #F9F8F2;
+    box-shadow: #C6C5C0;
+}
+
+.sidebar ul li i {
+    font-size: 28px;
+    transition: font-size 0.3s ease;
+    margin-right: 2px;
+}
+
+
+.sidebar ul li a span {
+    display: none;
+    margin-left: 2px;
+}
+
+.sidebar.expanded ul li a span {
+    display: inline-block;
+}
+
+.sidebar.expanded ul li i {
+    font-size: 32px;
+}
+
+
+#menu-icon {
+    font-size: 32px;
+    color: #2E2E2E;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.menu-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    border-radius: 8px;
+}
+
+.menu-text {
+    display: none;
+    margin-left: 15px;
+    font-weight: bold;
+    font-size: 35px;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.sidebar.expanded .menu-text {
+    display: inline-block;
+    opacity: 1;
+    color: #2E2E2E;
+    font-weight: 600;
+}
+
+/* ---------------------------------------------------RESPONSIVE DESIGN FOR SIDEBAR------------------------------------------- */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 50px;
+    }
+
+    .sidebar.expanded {
+        width: 200px;
+    }
+
+    #menu-icon {
+        font-size: 24px;
+    }
+
+    .sidebar ul li a {
+        font-size: 16px;
+    }
+
+    .sidebar ul li i {
+        font-size: 24px;
+    }
+
+    .menu-text {
+        font-size: 16px;
+    }
+}
+
+
+
+/* ------------------------------------------------------------------------------------------------------------------------------ */
+
+
+
+
+.search-cars-container {
+    max-width: 1200px;
+    margin: 100px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    position: relative;
+    top: 50px;
+}
+
+.booking-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.booking-form form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    font-family: 'SF Pro Display', sans-serif;
+}
+
+.input-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.input-group input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #2E2E2E;
+    border-radius: 5px;
+    outline: none;
+}
+
+.btn-search {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: #F07324;
+    font-weight: bold;
+    color: #F9F8F2;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+.btn-search:hover {
+    background-color: #D1621E;
+}
+
+
+.booking-form form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.input-group {
+    flex: 1;
+    min-width: 200px;
+    font-family: 'SF Pro Display', sans-serif;
+}
+
+.input-group:last-of-type {
+    flex-grow: 0;
+}
+
+.btn-search {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Responsive Design for Search Cars Form */
+@media (max-width: 768px) {
+    .search-cars-container {
+        padding: 15px;
+        margin: 80px auto;
+    }
+
+    .booking-form-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        /* Stack the form vertically */
+    }
+
+    .booking-form form {
+        display: flex;
+        flex-direction: column;
+        /* Stack the inputs vertically */
+        gap: 15px;
+        width: 100%;
+        align-items: center;
+    }
+
+    .input-group {
+        width: 100%;
+        /* Make input fields take full width */
+        font-family: 'SF Pro Display', sans-serif;
+    }
+
+    .input-group label {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .input-group input {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .btn-search {
+        width: 100%;
+        /* Make button take full width */
+        margin-right: 10px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-cars-container {
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    .input-group {
+        font-size: 14px;
+    }
+
+    .input-group label {
+        font-size: 14px;
+    }
+
+    .input-group input {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .btn-search {
+        padding: 14px 18px;
+        font-size: 14px;
+    }
+}
+
+/* Date Input Styling */
+.input-group input[type="date"] {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 16px;
+    font-family: 'SF Pro Display', sans-serif;
+    border: 2px solid #cccccc;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    color: #333333;
+    appearance: none;
+    /* Remove default browser styles */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Placeholder Styling for Date */
+.input-group input[type="date"]::placeholder {
+    color: #aaaaaa;
+    font-style: italic;
+}
+
+/* Focus Effect */
+.input-group input[type="date"]:focus {
+    border-color: #F07324;
+    box-shadow: 0 4px 8px rgba(240, 115, 36, 0.2);
+    background-color: #fafafa;
+}
+
+/* Hover Effect */
+.input-group input[type="date"]:hover {
+    border-color: #F07324;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+/* Optional: Calendar Icon */
+.input-group input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="gray"%3E%3Cpath d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM5 20V9h14v11H5zm2-9h5v5H7v-5z"/%3E%3C/svg%3E');
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    opacity: 0.8;
+}
+
+
+.input-group input {
+    width: 100%;
+    padding: 13px;
+    font-size: 1rem;
+    border: 1px solid #2E2E2E;
+    border-radius: 5px;
+    outline: none;
+    box-sizing: border-box;
+    font-family: 'SF Pro Display', sans-serif;
+}
+
+.btn-search {
+    padding: 13px 20px;
+    background-color: #F07324;
+    color: #F9F8F2;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    align-self: flex-end;
+    /* Aligns the button to the bottom */
+    max-width: 150px;
+}
+
+.btn-search:hover {
+    background-color: #C55D1E;
+}
+
+
+
+/* Flatpickr Custom Styling */
+.flatpickr-calendar {
+    background-color: #F9F8F2;
+    border: 1px solid #F07324;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-family: 'SF Pro Display', sans-serif;
+    color: #333;
+}
+
+.flatpickr-day {
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.flatpickr-day:hover {
+    background-color: #F07324;
+    color: #fff;
+}
+
+.flatpickr-day.today {
+    background-color: #C55D1E;
+    color: #fff;
+    font-weight: bold;
+}
+
+
+/* ------------------------------------------------------------------------------------------------------------------------------ */
+.search-results {
+    text-align: center;
+    padding: 20px;
+}
+
+.car-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.car-card {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 800px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #d1d1d1;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.car-card:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.car-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    height: auto;
+}
+
+
+.car-image {
+    width: 250px;
+    height: 120px;
+    object-fit: contain;
+    display: block;
+    border-radius: 8px;
+    margin-top: 80px;
+}
+
+.logo-wrapper {
+    width: 80%;
+    display: flex;
+    justify-content: flex-start;
+    margin-right: 20px;
+    margin-top: 50px;
+}
+
+.partner-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+
+.car-center {
+    flex: 1;
+    padding: 0 20px;
+    text-align: left;
+}
+
+.car-center h3 {
+    font-size: 30px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.car-center p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+
+.car-info {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.car-info .info-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+
+.car-info .info-item i {
+    font-size: 20px;
+    color: #f07324;
+}
+
+.car-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.btn-book {
+    padding: 10px 20px;
+    background-color: #f07324;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+}
+
+.btn-book:hover {
+    background-color: #d1621e;
+}
+
+/* Features List */
+.features {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #2E2E2E;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.features li {
+    margin: 5px 0;
+    flex: 1 0 30%;
+    text-align: center;
+}
+
+.features li i {
+    color: #f07324;
+}
+
+.car-center p.location {
+    font-size: 20px;
+    color: #2E2E2E;
+    margin-top: 15px;
+    background-color: rgba(222, 221, 221, 0.5);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.car-center p.location i {
+    font-size: 20px;
+    color: #F07324;
+}
+
+/* Media Queries for Smaller Screens */
+@media (max-width: 768px) {
+    .car-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+    }
+
+    .car-left {
+        width: 100%;
+        margin-left: 150px;
+    }
+
+    .car-image {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+        object-fit: contain;
+
+    }
+
+    .car-center {
+        text-align: center;
+    }
+
+    .car-center h3 {
+        font-size: 24px;
+    }
+
+    .car-info {
+
+        gap: 10px;
+        text-align: center;
+    }
+
+    .car-info .info-item {
+        flex: 1 1 100%;
+    }
+
+    .price {
+        font-size: 18px;
+    }
+
+    .features li {
+        flex: 1 0 45%;
+        /* Stack features vertically on smaller screens */
+    }
+
+    .search-results {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .car-card {
+        padding: 15px;
+    }
+
+    .car-center h3 {
+        font-size: 20px;
+    }
+
+    .price {
+        font-size: 16px;
+    }
+
+    .features li {
+        flex: 1 0 100%;
+        /* Stack all feature items vertically on very small screens */
+    }
+
+    .btn-book {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+
+/* ------------------------------------------------------------------------------------------------------------------------------ */
+.filter-section {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows elements to wrap on smaller screens */
+    gap: 20px;
+    padding: 20px;
+    background-color: #F9F8F2;
+    margin-top: 20px;
+
+    justify-content: center;
+}
+
+.filter-section select {
+    padding: 11px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    cursor: pointer;
+    min-width: 150px;
+    margin-right: 10px;
+
+    /* Custom dropdown arrow styling */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='18' height='18' fill='%23f07324'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+    /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    /* Moves arrow to the right */
+    background-size: 28px;
+    /* Adjust the size of the arrow */
+    padding-right: 35px;
+    /* Increase padding to match arrow size */
+}
+
+.filter-btn {
+    margin-top: 20px;
+    padding: 12px 16px;
+    /* More padding for better spacing */
+    border: 2px solid #ccc;
+    /* Slightly thicker border for better visibility */
+    border-radius: 8px;
+    /* Softer rounded corners */
+    font-size: 14px;
+    background-color: #f9f9f9;
+    /* Subtle background color */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+.filter-btn:hover {
+    background-color: #f07324;
+    color: white;
+    border-color: #f07324;
+}
+
+/* Filter Button Specific Styling */
+#filterButton {
+    background-color: #f07324;
+    color: white;
+    padding: 12px 24px;
+    /* Increased padding for a modern look */
+    border: 2px solid #f07324;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+#filterButton:hover {
+    background-color: white;
+    color: #f07324;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .filter-section {
+        flex-direction: column;
+        /* Stacks elements vertically */
+        align-items: center;
+        margin-left: 70px;
+    }
+
+    .filter-section select,
+    .filter-btn {
+        width: 90%;
+        /* Makes elements full-width on small screens */
+    }
+
+    #filterButton {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .filter-section select {
+        margin-top: 20px;
+        /* Removes right margin on small screens */
+    }
+}
+
+
+
+/* ------------------------------------------------------------------------------------------------------------------------------ */
+
+/*----------------------------------------------------------------VIDEO2----------------------------------------------------*/
+.video2 {
+    position: relative;
+    width: 100%;
+    padding-top: 0.5in;
+    /* Default padding for larger screens */
+}
+
+.video2 video {
+    width: 100%;
+    /* Ensure the video scales to the container */
+    height: auto;
+    /* Maintain aspect ratio */
+    max-height: 100vh;
+    /* Prevent the video from taking too much vertical space */
+    display: block;
+    object-fit: cover;
+    /* Cover the container without distortion */
+}
+
+@media (max-width: 768px) {
+    .video2 {
+        padding-top: 0.3in;
+        /* Reduce padding for medium devices */
+    }
+
+    .video2 video {
+        max-height: 60vh;
+        /* Limit video height for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .video2 {
+        padding-top: 0.2in;
+        /* Further reduce padding for small devices */
+    }
+
+    .video2 video {
+        max-height: 50vh;
+        /* Restrict video height for very small devices */
+    }
+}
+
+/*----------------------------------------------------------------FOOTER----------------------------------------------------*/
+.footer {
+    background-color: #F07324;
+    color: #fff;
+    text-align: left;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+    margin: 0;
+    padding: 20px;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows sections to wrap on smaller screens */
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+}
+
+.footer-section {
+    flex: 1 1 300px;
+    /* Sections take up full width on smaller screens */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 30px;
+    /* Adjust the horizontal margin to move it more to the right */
+    padding-left: 50px;
+    /* Add padding on the left for additional spacing */
+}
+
+.footer-logo {
+    width: 120px;
+    /* Adjusted for smaller screens */
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 16px;
+    gap: 10px;
+    /* Adds spacing between links */
+}
+
+.footer-link,
+.payment-method-link {
+    color: #F9F8F2;
+    text-decoration: none;
+    font-size: 16px;
+    /* Adjust font size for smaller screens */
+}
+
+.footer-link:hover,
+.payment-method-link:hover {
+    font-weight: bold;
+}
+
+.footer-line {
+    border: none;
+    border-top: 1px solid #fff;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.footer-bottom-links {
+    display: flex;
+    flex-wrap: wrap;
+    /* Allows wrapping for small screens */
+    gap: 10px;
+    justify-content: center;
+    /* Center-align on smaller screens */
+    padding: 10px;
+}
+
+.footer-bottom-link {
+    color: #F9F8F2;
+    text-decoration: none;
+    font-size: 14px;
+    /* Smaller font for small screens */
+}
+
+.footer-social-media {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.social-media-link i {
+    font-size: 20px;
+    /* Smaller icon size */
+    color: #F9F8F2;
+}
+
+.social-media-link:hover i {
+    color: #90C6AA;
+}
+
+.footer-social-media p {
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .footer-content {
+        padding: 10px;
+    }
+
+    .footer-section {
+        flex: 1 1 100%;
+        /* Full width for each section */
+    }
+
+    .footer-links,
+    .footer-bottom-links {
+        text-align: center;
+        /* Center-align links on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-logo {
+        width: 100px;
+        /* Smaller logo for very small screens */
+    }
+
+    .footer-link,
+    .payment-method-link,
+    .footer-bottom-link {
+        font-size: 14px;
+        /* Smaller font size */
+    }
+
+    .social-media-link i {
+        font-size: 18px;
+        /* Smaller icons */
+    }
+
+    .footer-social-media p {
+        font-size: 12px;
+        /* Smaller text */
+    }
+}
+
+
+
+.navbar-profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+    /* Ensures the image is not distorted */
+    vertical-align: middle;
+}
+
+.navbar-profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+    /* Ensures the image is not distorted */
+    vertical-align: middle;
+}

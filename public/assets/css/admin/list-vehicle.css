@@ -1,0 +1,95 @@
+
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url('../fonts/SF-Pro-Display-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+.vehicle-.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.vehicle-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.vehicle-card {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.vehicle-image {
+    width: 30%; /* Adjust as needed */
+}
+
+.car-image {
+    max-width: 150%;
+    height: auto;
+    display: block;
+}
+
+.vehicle-details {
+    width: 70%; /* Adjust as needed */
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* Create space between info and actions */
+    align-items: center;
+}
+
+.vehicle-info {
+    display: flex;
+    flex-direction: column; /* Stack vehicle information vertically */
+}
+
+.name-brand {
+    margin-bottom: 10px;
+}
+
+.vehicle-name {
+    font-size: 1.5em;
+    font-weight: bold;
+    display: block; /* Ensure name takes full width */
+}
+
+.vehicle-brand {
+    display: block;
+}
+
+.additional-info {
+    display: flex;
+    flex-wrap: wrap; /* Wrap additional info if it doesn't fit */
+    gap: 10px;
+}
+
+.additional-info > span {
+    display: inline-block; /* Ensure they are inline */
+}
+
+.vehicle-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.view-icon,
+.archive-icon {
+    font-size: 1.2em;
+    color: #555;
+    text-decoration: none;
+}
+
+.btn {
+    background-color: #F07324 !important;
+    color: white !important;
+    border: none !important;
+}
