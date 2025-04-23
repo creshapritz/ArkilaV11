@@ -3,7 +3,9 @@
 @section('content')
     <style>
         .form {
-            background-color:{{ $primaryColor }};
+            background-color:
+                {{ $primaryColor }}
+            ;
             border-radius: 0.75rem;
             padding: 1.5rem;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -19,14 +21,18 @@
         h2 {
             font-size: 1.5rem;
             font-weight: 600;
-            color:{{ $primaryColor }};
+            color:
+                {{ $primaryColor }}
+            ;
             margin-bottom: 1.5rem;
             text-align: center;
         }
 
         label {
             font-weight: 600;
-            color: {{ $primaryColor }};
+            color:
+                {{ $primaryColor }}
+            ;
             margin-bottom: 0.5rem;
             display: block;
         }
@@ -72,7 +78,18 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
-        /* Form input styling */
+        .choose-file-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            color: #2e2e2e;
+            font-weight: bold;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
         input,
         select,
         textarea {
@@ -120,10 +137,13 @@
                 <a class="nav-link {{ request()->routeIs('admin.about-us-settings') ? 'active' : '' }}"
                     href="{{ route('admin.about-us-settings') }}">About Us</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.media-settings') ? 'active' : '' }}"
+                    href="{{ route('admin.media-settings') }}">Media Settings</a>
+            </li>
         </ul>
         <h2 class="text-2xl font-bold mb-4">Change Logo</h2>
 
-        {{-- Current Logo --}}
         @if ($currentLogo)
             <div class="mb-4">
                 <label class="block font-semibold mb-2">Current Logo:</label>
@@ -131,15 +151,16 @@
             </div>
         @endif
 
-        {{-- Upload New Logo --}}
+
         <form class="form1" action="{{ route('admin.updateLogo') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-5">
                 <label for="site_logo" class="block font-semibold mb-2">Upload New Logo:</label>
-                <input type="file" name="site_logo" id="site_logo" accept="image/*" onchange="previewLogo()" required>
+                <input type="file" name="site_logo" id="site_logo" class="choose-file-btn" accept="image/*"
+                    onchange="previewLogo()" required>
             </div>
 
-            {{-- Logo Preview --}}
+
             <div id="logoPreview" class="mb-4" style="display: none;">
                 <label class="block font-semibold mb-2">New Logo Preview:</label>
                 <img id="previewImage" src="#" alt="Logo Preview" class="logo-preview">

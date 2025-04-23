@@ -87,7 +87,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.themeColor') ? 'active' : '' }}"
+                <a class="nav-link {{ request()->routeIs('admin.color-update') ? 'active' : '' }}"
                     href="{{ route('admin.color-update') }}">
                     Color Update
                 </a>
@@ -95,22 +95,14 @@
         </ul>
 
 
-        <!-- Profile Picture Section -->
+  
         <div class="text-center mb-3">
-    @if(auth('admin')->check() && auth('admin')->user()->profile_picture)
-        <div>
-            <img src="{{ asset('storage/drivers/' . auth('admin')->user()->profile_picture) }}" alt="Profile Picture">
-        </div>
-    @else
-        <div>
-            <img src="{{ asset('default-avatar.png') }}" alt="Default Avatar">
-        </div>
-    @endif
-    <p>Admin</p>
+        
+   
 </div>
 
 
-        <!-- Account Form -->
+      
         <form action="{{ route('admin.updateAccount') }}" method="POST">
             @csrf
             @method('PUT')

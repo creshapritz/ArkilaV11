@@ -77,48 +77,42 @@ class SettingsController extends Controller
 
     public function updatePassword(Request $request, MailService $mailService)
     {
-        // Validate request
+        // Validate request input
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|min:8|confirmed', 
+            'new_password' => 'required|min:8|confirmed',
         ]);
-    
-       
-        $client = Auth::user();
-    
+
+        // Get authenticated client via correct guard
+        $client = Auth::guard('client')->user();
+
         if (!$client) {
             return back()->withErrors(['error' => 'User not authenticated.']);
         }
-    
-     
+
+        // Check if current password matches
         if (!Hash::check($request->current_password, $client->password)) {
             return back()->withErrors(['current_password' => 'Incorrect current password.']);
         }
-    
-      
-        $hashedPassword = Hash::make($request->new_password);
-    
-       
-        $client->update([
-            'password' => $hashedPassword
-        ]);
-    
-       
+
+        // Update password
+        $client->password = Hash::make($request->new_password);
+        $client->save();
+
+        // Send notification email
         $subject = "Password Changed Successfully";
         $body = "Hi {$client->first_name},<br><br>Your password was successfully changed.<br>
-                 If this wasn't you, please reset your password immediately.";
-    
-       
+             If this wasn't you, please reset your password immediately.";
+
         $mailSent = $mailService->sendMail($client->email, $subject, $body);
-    
-        
+
         if ($mailSent) {
             return back()->with('success', 'Password updated successfully. A notification has been sent to your email.');
         } else {
             return back()->with('success', 'Password updated successfully, but we could not send a notification email.');
         }
     }
-    
+
 
 
 

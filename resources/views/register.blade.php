@@ -1,3 +1,6 @@
+@php
+    $terms = \App\Models\PrivacyLegal::where('key', 'terms_conditions')->value('value');
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,11 +32,11 @@
                 <p class="logo-text">Adventure Awaits!</p>
             </div>
             <img src="{{ asset('assets/img/arkila.gif') }}">
-           
+
 
         </div>
 
-     
+
         <div class="form-container">
 
             @if (session('success'))
@@ -62,7 +65,7 @@
                     <p>Sign up with ARKILA to get moving.</p>
                 </div>
 
-              
+
                 <div class="timeline-registration-container">
                     <div class="timeline">
                         <div class="timeline-step" id="step-1">1</div>
@@ -72,7 +75,7 @@
                         <div class="timeline-step" id="step-3">3</div>
                     </div>
                 </div>
-             
+
                 <div class="registration-heading">
                     <h2>Registration</h2>
                     <p>I. Complete your registration and gain access to our wide range of vehicles and services.</p>
@@ -80,7 +83,7 @@
 
 
 
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="first_name">First Name</label>
@@ -120,7 +123,7 @@
                     </div>
                 </div>
 
-               
+
                 <div class="form-row">
 
 
@@ -164,7 +167,7 @@
                     </div>
                 </div>
 
-            
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="emergency_contact">Emergency Contact</label>
@@ -185,7 +188,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="form-row">
 
                     <div class="form-group">
@@ -207,7 +210,7 @@
                 </div>
 
                 <div class="form-row">
-                   
+
                     <div class="form-group">
                         <label for="password">Password</label>
                         <div class="input-container">
@@ -237,14 +240,17 @@
                 </div>
 
 
-              
-                <div class="form-group terms">
-                    <input type="checkbox" id="terms" name="terms" class="custom-checkbox" required>
-                    <label for="terms">I have read and agreed to the <a href="{{ asset('documents/TC_ARKILA.pdf') }}"
-                            target="_blank">Terms and Conditions.</a>
-                </div>
 
-              
+                @if ($terms)
+                    <div class="form-group terms">
+                        <input type="checkbox" id="terms" name="terms" class="custom-checkbox" required>
+                        <label for="terms">I have read and agreed to the
+                            <a href="{{ $terms }}" target="_blank">Terms and Conditions</a>
+                        </label>
+                    </div>
+                @endif
+
+
                 <button class="reg-button" type="submit">Sign Up</button>
 
                 <div class="reg-login">

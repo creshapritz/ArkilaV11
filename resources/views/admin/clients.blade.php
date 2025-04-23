@@ -169,7 +169,6 @@
 
                                 <form action="{{ route('admin.clients.archive', $client->id) }}" method="POST">
                                     @csrf
-                                    @method('DELETE')
                                     <button type="submit"
                                         onclick="return confirm('Are you sure you want to archive this client?')">
                                         <i class='bx bx-archive'></i>

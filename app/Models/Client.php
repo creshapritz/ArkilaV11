@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +10,8 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 class Client extends Authenticatable implements CanResetPasswordContract
 {
-    use HasFactory, Notifiable, CanResetPassword; // Add CanResetPassword here
+    use SoftDeletes;
+    use HasFactory, Notifiable, CanResetPassword; 
 
     protected $fillable = [
         'first_name',
@@ -46,13 +47,13 @@ class Client extends Authenticatable implements CanResetPasswordContract
 
     ];
 
-    // Ensure password is hashed automatically
+    
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
     }
 
-    // Hide sensitive fields from arrays
+  
     protected $hidden = ['password', 'remember_token'];
 
 
@@ -61,9 +62,13 @@ class Client extends Authenticatable implements CanResetPasswordContract
         return $this->belongsToMany(Driver::class, 'favorite_drivers')->withTimestamps();
     }
     public function bookings()
-{
-    return $this->hasMany(Booking::class);
-}
+    {
+        return $this->hasMany(Booking::class);
+    }
+    protected $casts = [
+        'is_archived' => 'boolean',
+        'archived_at' => 'datetime',
+    ];
 
 
 }

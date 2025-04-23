@@ -164,7 +164,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">Company Name:</label>
-                        <input type="text" class="form-control" value="{{ $partner->company_name }}" readonly>
+                        <input type="text" class="form-control"  id="company_name" name="company_name">
+
                     </div>
                 </div>
 

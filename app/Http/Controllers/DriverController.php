@@ -43,38 +43,53 @@ class DriverController extends Controller
             'second_id_back' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        // Optional: You can base64 encode or just get original filenames
+      
+        $uploadPath = public_path('uploads/driver_docs');
+
+        if (!file_exists($uploadPath)) {
+            mkdir($uploadPath, 0755, true); // Create the directory if it doesn't exist
+        }
+        
+        // Profile Picture
         if ($request->hasFile('profile_picture')) {
             $file = $request->file('profile_picture');
-            $validatedData['profile_picture'] = $file->getClientOriginalName(); // or base64_encode(file_get_contents($file))
+            $filename = uniqid() . '_' . $file->getClientOriginalName();
+            $file->move($uploadPath, $filename);
+            $validatedData['profile_picture'] = 'uploads/driver_docs/' . $filename;
         }
-
+        
+        // License Front
         if ($request->hasFile('license_front')) {
             $file = $request->file('license_front');
-            $validatedData['license_front'] = $file->getClientOriginalName(); // or base64_encode(file_get_contents($file))
+            $filename = uniqid() . '_' . $file->getClientOriginalName();
+            $file->move($uploadPath, $filename);
+            $validatedData['license_front'] = 'uploads/driver_docs/' . $filename;
         }
-
+        
+        // License Back
         if ($request->hasFile('license_back')) {
             $file = $request->file('license_back');
-            $validatedData['license_back'] = $file->getClientOriginalName();
+            $filename = uniqid() . '_' . $file->getClientOriginalName();
+            $file->move($uploadPath, $filename);
+            $validatedData['license_back'] = 'uploads/driver_docs/' . $filename;
         }
-
+        
+        // Second ID Front
         if ($request->hasFile('second_id_front')) {
             $file = $request->file('second_id_front');
-            $validatedData['second_id_front'] = $file->getClientOriginalName();
+            $filename = uniqid() . '_' . $file->getClientOriginalName();
+            $file->move($uploadPath, $filename);
+            $validatedData['second_id_front'] = 'uploads/driver_docs/' . $filename;
         }
-
+        
+        // Second ID Back
         if ($request->hasFile('second_id_back')) {
             $file = $request->file('second_id_back');
-            $validatedData['second_id_back'] = $file->getClientOriginalName();
+            $filename = uniqid() . '_' . $file->getClientOriginalName();
+            $file->move($uploadPath, $filename);
+            $validatedData['second_id_back'] = 'uploads/driver_docs/' . $filename;
         }
-
-        // Optional: save to DB just the name or whatever info you want
-        $partner = \App\Models\Partner::find($request->partner_id);
-        if ($partner) {
-            $validatedData['company_name'] = $partner->company_name;
-        }
-
+        
         Driver::create($validatedData);
 
         return redirect()->route('admin.drivers.index')->with('success', 'Driver added successfully (files not stored)!');

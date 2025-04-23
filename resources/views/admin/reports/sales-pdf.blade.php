@@ -107,6 +107,7 @@
 <body>
 
     <div class="report-header">
+        
         <h1>ARKILA SALES REPORT</h1>
         <p>Sumulong St., Brgy. San Pedro, Angono, Rizal</p>
         <p>Email: arkilacarrental123@gmail.com | Phone: (02) 123-4567</p>
@@ -138,7 +139,7 @@
                     <td>{{ $booking->client->first_name ?? 'N/A' }} {{ $booking->client->last_name ?? '' }}</td>
                     <td>{{ $booking->car->name ?? 'N/A' }}</td>
                     <td>{{ $booking->created_at->format('M d, Y') }}</td>
-                    <td>₱ {{ number_format($booking->amount, 2) }}</td>
+                    <td>PHP {{ number_format($booking->amount, 2) }}</td>
                     <td>{{ ucfirst($booking->status) }}</td>
                 </tr>
             @endforeach

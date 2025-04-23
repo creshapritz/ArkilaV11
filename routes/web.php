@@ -309,7 +309,9 @@ Route::prefix('admin')->group(function () {
     Route::put('/admin/accounts/{id}', [AdminAuthController::class, 'update'])->name('admin.update');
     Route::get('/admin/clients', [ClientController::class, 'index'])->name('admin.clients');
     Route::get('/admin/clients/{id}', [ClientController::class, 'show'])->name('admin.clients.show');
-    Route::delete('/admin/clients/{id}/archive', [ClientController::class, 'archive'])->name('admin.clients.archive');
+    Route::post('admin/clients/archive/{id}', [AdminSettingsController::class, 'archiveClient'])->name('admin.clients.archive');
+    Route::post('/admin/archives/clients/restore/{id}', [AdminSettingsController::class, 'restoreClient'])->name('admin.restoreClient');
+    Route::delete('/admin/archives/clients/delete/{id}', [AdminSettingsController::class, 'deleteClientFromArchive'])->name('admin.deleteClientFromArchive');
 
     Route::get('admin/create', [AdminAuthController::class, 'create'])->name('admin.create');
     Route::post('/admin/{id}/archive', [AdminAuthController::class, 'archive'])->name('admin.archive');
@@ -377,24 +379,28 @@ Route::get('/admin/admin-settings-PL', function () {
     return view('admin.admin-settings-PL');
 })->name('admin.admin-settings-PL');
 
-
+Route::get('/admin/admin-settings-PL', function () {
+    return view('admin.admin-settings-PL');
+})->name('admin.admin-settings-PL');
 Route::get('/admin/settings', [AdminSettingsController::class, 'adminSettings'])->name('admin.settings');
-Route::get('/admin/admin-settings-PL', [AdminSettingsController::class, 'privacyLegal'])->name('admin.admin-settings-PL');
+Route::get('/admin/admin-settings-PL', [AdminSettingsController::class, 'showPrivacyLegal'])->name('admin.admin-settings-PL');
 Route::get('/admin/admin-settings-PL/edit', [AdminSettingsController::class, 'editPrivacyLegal'])->name('admin.PL-edit');
 Route::post('/admin/admin-settings-PL/update', [AdminSettingsController::class, 'updatePrivacyLegal'])->name('admin.updatePrivacyLegal');
-
 
 
 Route::get('admin/company-management', [AdminSettingsController::class, 'companyManagement'])->name('admin.companyManagement');
 Route::post('/admin/update-logo', [AdminSettingsController::class, 'updateLogo'])->name('admin.updateLogo');
 
-// Theme Color Update Route
+
 Route::get('/admin/color-update', [AdminSettingsController::class, 'showThemeSettings'])->name('admin.color-update');
 Route::post('/admin/update-theme-color', [AdminSettingsController::class, 'updateThemeColor'])->name('admin.updateThemeColor');
+
+
 Route::get('admin/feedback-reviews', [AdminSettingsController::class, 'showReviews'])->name('admin.feedbackReviews');
 Route::post('admin/reviews/archive/{id}', [AdminSettingsController::class, 'archiveReview'])->name('admin.archiveReview');
 Route::get('/admin/archives', [AdminSettingsController::class, 'showArchivedReviews'])->name('admin.archives');
 Route::post('/admin/archives/restore/{id}', [AdminSettingsController::class, 'restoreReview'])->name('admin.restoreReview');
+
 Route::get('/admin/faq-settings', [AdminSettingsController::class, 'showFaqs'])->name('admin.faqs.index');
 Route::put('/admin/faqs', [AdminSettingsController::class, 'updateFaqs'])->name('admin.faqs.update');
 // update about us
@@ -410,10 +416,16 @@ Route::get('/admin/change-downpayment', [AdminSettingsController::class, 'showFa
 Route::get('/admin/change-downpayment', [AdminSettingsController::class, 'editDownpayment'])->name('admin.change-downpayment');
 Route::post('/admin/change-downpayment', [AdminSettingsController::class, 'updateDownpayment'])->name('admin.change-downpayment.update');
 
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::delete('/admin/archives/delete/{id}', [AdminSettingsController::class, 'deleteReviewFromArchive'])->name('admin.deleteReviewFromArchive');
+    Route::get('/backup-restore', [AdminSettingsController::class, 'showBackups'])->name('admin.backup-restore');
+    Route::post('/backup-restore/restore/{id}', [AdminSettingsController::class, 'restoreFromBackup'])->name('admin.restore.backup');
+    Route::delete('/backup-restore/delete/{id}', [AdminSettingsController::class, 'deleteBackup'])->name('admin.delete.backup');
+});
 
 
-
-
+Route::get('/admin/media-settings', [AdminSettingsController::class, 'mediaSettings'])->name('admin.media-settings');
+Route::post('/admin/media-settings', [AdminSettingsController::class, 'updateMedia'])->name('admin.settings.updateMedia');
 
 
 
@@ -624,9 +636,11 @@ Route::get('/admin/sales/export', [AdminReportController::class, 'exportPDF'])->
 Route::get('/admin/reports/bookings/export-pdf', [AdminReportController::class, 'exportBookingsPdf'])->name('admin.reports.bookings.exportPdf');
 Route::get('/admin/reports/clients/export-pdf', [AdminReportController::class, 'exportClientsPDF'])->name('admin.reports.clients.exportPDF');
 Route::get('/admin/reports/clients/export-specific', [AdminReportController::class, 'exportSpecificClientPDF'])->name('admin.reports.clients.exportSpecificPDF');
+
+
+
+
 Route::get('/admin/reports/arkila-earnings', [ReportController::class, 'arkilaEarnings'])->name('admin.reports.arkila_earnings');
-
-
 Route::get('/admin/reports/arkila', [AdminReportController::class, 'arkilaEarningsReport'])->name('admin.reports.arkila');
 Route::get('/admin/reports/arkila/export', [AdminReportController::class, 'exportArkilaReport'])->name('admin.reports.arkila.export');
 Route::get('/admin/reports/sales/export', [AdminReportController::class, 'exportPDF'])->name('admin.reports.exportPDF');
@@ -682,7 +696,8 @@ Route::prefix('partners_admin')->name('partners_admin.')->group(function () {
         Route::delete('/drivers/{id}/archive', [PartnerAdminController::class, 'archiveDriver'])->name('drivers.archive');
 
         Route::get('/cars', [PartnerAdminController::class, 'cars'])->name('cars.index');
-        Route::get('/cars/create', [PartnerAdminController::class, 'createCar'])->name('cars.create');
+       
+       
 
         Route::put('/partners-admin/bookings/{id}/usage-status', [PartnersAdminBookingController::class, 'updateUsageStatus'])
             ->name('partners_admin.bookings.updateUsageStatus');
@@ -695,18 +710,39 @@ Route::prefix('partners_admin')->name('partners_admin.')->group(function () {
 
 });
 Route::middleware(['auth:partner_admin'])->group(function () {
-    Route::get('partners_admin/drivers', [PartnerAdminController::class, 'index'])->name('partners_admin.drivers.index'); // Update route name here
+   
+    Route::get('partners_admin/cars', [PartnerVehicleController::class, 'index'])->name('partners_admin.cars.index');
+    Route::get('partners_admin/cars/create', [PartnerVehicleController::class, 'create'])->name('partners_admin.cars.create');
+    Route::post('partners_admin/cars/store', [PartnerVehicleController::class, 'store'])->name('cars.store'); 
+    Route::get('partners_admin/drivers/{id}', [PartnerAdminController::class, 'show'])->name('drivers.show'); 
+});
+
+Route::get('partners_admin/drivers/create', [DriverController::class, 'createDriver'])->name('partners_admin.drivers.create');
 
 
-    Route::get('partners_admin/cars/create', [PartnerVehicleController::class, 'create'])->name('partners_admin.cars.create'); // Update route name here
 
-    Route::post('partners_admin/cars/store', [PartnerVehicleController::class, 'store'])->name('cars.store'); // Update route name here
-    Route::get('partners_admin/drivers/{id}', [PartnerAdminController::class, 'show'])->name('drivers.show'); // Update route name here
+
+
+Route::prefix('partners_admin')->name('partners_admin.')->group(function () {
+  
+    Route::get('/drivers', [PartnerAdminController::class, 'index'])->name('drivers.index');
+    Route::get('/drivers/create', [PartnerAdminController::class, 'createDriver'])->name('drivers.create');
+    Route::get('/drivers/{id}', [PartnerAdminController::class, 'show'])->name('drivers.show');
+
+
+    
+});
+
+// web.php
+
+Route::middleware(['auth:partner_admin'])->prefix('partner-admin')->name('partner_admin.')->group(function () {
+    Route::get('/reports', function () {
+        return view('partner_admin.reports');
+    })->name('reports');
 });
 
 
 
-Route::get('/partner_admin/drivers', [PartnerAdminController::class, 'index'])->name('partner_admin.drivers.index');
 
 Route::get('/partner/bookings/checklist-pdf/{id}', [PartnerAdminController::class, 'generateChecklistPdf'])
     ->name('partners_admin.bookings.checklist.pdf');

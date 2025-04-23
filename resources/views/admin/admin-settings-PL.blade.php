@@ -10,55 +10,95 @@
                     href="{{ route('admin.admin-settings') }}">Account Management</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.privacyLegal') ? 'active' : '' }}"
+                <a class="nav-link {{ request()->routeIs('admin.admin-settings-PL') ? 'active' : '' }}"
                     href="{{ route('admin.admin-settings-PL') }}">Privacy and Legal</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.userRequirements') ? 'active' : '' }}"
+                <a class="nav-link {{ request()->routeIs('admin.color-update') ? 'active' : '' }}"
                     href="{{ route('admin.color-update') }}">Color
                     Update</a>
             </li>
         </ul>
 
-        <h2>Privacy and Legal</h2>
+        <h2 class="section-title">Privacy and Legal</h2>
 
-        {{-- Terms and Conditions --}}
-        <div class="border border-gray-300 p-4 rounded mt-2">
-            <h4 class="font-semibold">Terms and Conditions</h4>
-            <div class="border border-gray-200 p-4 rounded bg-gray-100 mt-2">
-                {!! nl2br(e($terms)) !!}
-            </div>
+        <div class="content-section">
+            <label class="section-label">Terms and Conditions:</label>
+            @if ($terms)
+                <a href="{{ $terms }}" target="_blank" class="link">Terms and Conditions</a>
+            @else
+                <p class="no-file">No file uploaded yet.</p>
+            @endif
         </div>
 
-        {{-- Privacy Policy --}}
-        <div class="border border-gray-300 p-4 rounded mt-4">
-            <h4 class="font-semibold">Privacy Policy</h4>
-            <div class="border border-gray-200 p-4 rounded bg-gray-100 mt-2">
-                {!! nl2br(e($privacy)) !!}
-            </div>
+        <div class="content-section">
+            <label class="section-label">Privacy Policy:</label>
+            @if ($privacy)
+                <a href="{{ $privacy }}" target="_blank" class="link">Privacy Policy</a>
+            @else
+                <p class="no-file">No file uploaded yet.</p>
+            @endif
         </div>
 
-        {{-- Edit Button --}}
-        <div class="mt-4">
-            <a href="{{ route('admin.PL-edit') }}"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                ✏️ Edit
-            </a>
+        <a href="{{ route('admin.PL-edit') }}" class="btn-edit">Edit</a>
 
-        </div>
-    </div>
-    <style>
-        /* Settings Section */
-        .settings-section {
-            background: rgb(255, 255, 255);
-            padding: 20px;
-            border-radius: 10px;
-            width: 890px;
-        }
+        <style>
+            .section-title {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 20px;
+            }
 
-        .settings-section h2 {
-            color: #333;
-            margin-bottom: 15px;
-        }
-    </style>
+
+            .content-section {
+                margin-bottom: 20px;
+            }
+
+            .section-label {
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 8px;
+                display: block;
+            }
+
+
+            .link {
+                color: #F07324;
+                ;
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+
+            .link:hover {
+                color: #F07324;
+                ;
+            }
+
+
+            .no-file {
+                color: #888;
+                font-style: italic;
+            }
+
+
+            .btn-edit {
+                display: inline-block;
+                background-color: #F07324;
+                color: white;
+                padding: 10px 45px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 600;
+                transition: background-color 0.3s ease;
+                margin-top: 20px;
+            }
+
+            .btn-edit:hover {
+                text-decoration: none;
+                background-color: #D65F1E;
+                color: #fff;
+            }
+        </style>
+
 @endsection

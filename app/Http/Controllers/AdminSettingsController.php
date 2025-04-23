@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Setting;
 use App\Models\Review;
+use App\Models\Faq;
+use App\Models\Backup;
+use App\Models\Client;
 use Illuminate\Support\Facades\Storage;
 
 use App\Models\PrivacyLegal;
-use App\Models\Faq;
 
 class AdminSettingsController extends Controller
 {
@@ -61,25 +63,15 @@ class AdminSettingsController extends Controller
         return redirect()->route('admin.admin-settings')->with('success', 'Password updated successfully.');
     }
 
-    public function privacyLegal()
+
+    public function showPrivacyLegal()
     {
-        $terms = DB::table('privacylegal')->where('key', 'terms_conditions')->first();
-        $privacy = DB::table('privacylegal')->where('key', 'privacy_policy')->first();
+        $privacyLegal = PrivacyLegal::first();
 
-        if (!$terms) {
-            DB::table('privacylegal')->insert(['key' => 'terms_conditions', 'value' => 'Default terms and conditions text here...']);
-            $terms = DB::table('privacylegal')->where('key', 'terms_conditions')->first();
-        }
+        $terms = asset($privacyLegal->terms_conditions);
+        $privacy = asset($privacyLegal->privacy_policy);
 
-        if (!$privacy) {
-            DB::table('privacylegal')->insert(['key' => 'privacy_policy', 'value' => 'Default privacy policy text here...']);
-            $privacy = DB::table('privacylegal')->where('key', 'privacy_policy')->first();
-        }
-
-        return view('admin.admin-settings-PL', [
-            'terms' => $terms->value ?? '',
-            'privacy' => $privacy->value ?? ''
-        ]);
+        return view('admin.admin-settings-PL', compact('terms', 'privacy'));
     }
 
     public function editPrivacyLegal()
@@ -100,26 +92,29 @@ class AdminSettingsController extends Controller
 
     public function updatePrivacyLegal(Request $request)
     {
-        $request->validate([
-            'terms_conditions' => 'required|string',
-            'privacy_policy' => 'required|string',
-        ]);
+        if ($request->hasFile('terms_conditions')) {
+            $filename = 'terms_conditions_' . time() . '.' . $request->file('terms_conditions')->getClientOriginalExtension();
+            $path = $request->file('terms_conditions')->move(public_path('documents'), $filename);
 
-        DB::table('privacylegal')->updateOrInsert(
-            ['key' => 'terms_conditions'],
-            ['value' => $request->terms_conditions]
-        );
+            PrivacyLegal::updateOrCreate(
+                ['key' => 'terms_conditions'],
+                ['value' => 'documents/' . $filename]
+            );
+        }
 
-        DB::table('privacylegal')->updateOrInsert(
-            ['key' => 'privacy_policy'],
-            ['value' => $request->privacy_policy]
-        );
+        if ($request->hasFile('privacy_policy')) {
+            $filename = 'privacy_policy_' . time() . '.' . $request->file('privacy_policy')->getClientOriginalExtension();
+            $path = $request->file('privacy_policy')->move(public_path('documents'), $filename);
 
-        // Redirect back to the Privacy & Legal page with a success flash message
-        return redirect()
-            ->route('admin.admin-settings-PL')
-            ->with('success', 'Privacy and Legal information updated successfully.');
+            PrivacyLegal::updateOrCreate(
+                ['key' => 'privacy_policy'],
+                ['value' => 'documents/' . $filename]
+            );
+        }
+
+        return back()->with('success', 'Privacy & Legal documents updated successfully!');
     }
+
 
 
     public function updateLogo(Request $request)
@@ -131,9 +126,10 @@ class AdminSettingsController extends Controller
         $file = $request->file('site_logo');
         $filename = time() . '_' . $file->getClientOriginalName();
 
-      
+        // Move to public/logos
         $file->move(public_path('logos'), $filename);
 
+        // Save relative path
         $path = 'logos/' . $filename;
 
         Setting::updateOrCreate(
@@ -143,6 +139,8 @@ class AdminSettingsController extends Controller
 
         return back()->with('success', 'Logo updated successfully!');
     }
+
+
 
 
     public function companyManagement()
@@ -163,16 +161,52 @@ class AdminSettingsController extends Controller
     public function updateThemeColor(Request $request)
     {
         $request->validate([
-            'theme_color' => 'required|string'
+            'theme_color' => 'required|string',
+            'secondary_color' => 'required|string',
         ]);
 
-        Setting::updateOrCreate(
-            ['key' => 'theme_color'],
-            ['value' => $request->theme_color]
-        );
+        Setting::updateOrCreate(['key' => 'theme_color'], ['value' => $request->theme_color]);
+        Setting::updateOrCreate(['key' => 'secondary_color'], ['value' => $request->secondary_color]);
 
-        return redirect()->back()->with('success', 'Theme color updated!');
+        return back()->with('success', 'Theme colors updated successfully.');
     }
+
+    public function archiveClient($id)
+    {
+        $client = Client::findOrFail($id);
+        $client->is_archived = true; // Set to true (1)
+        $client->archived_at = now(); // Set the timestamp to the current time
+        $client->save();
+
+
+        return redirect()->back()->with('success', 'Client archived successfully.');
+    }
+
+    public function restoreClient($id)
+    {
+        $client = Client::findOrFail($id);
+        $client->is_archived = false;
+        $client->save();
+
+        return redirect()->back()->with('success', 'Client restored successfully.');
+    }
+
+    public function deleteClientFromArchive($id)
+    {
+        $client = Client::where('is_archived', true)->findOrFail($id);
+
+        // Backup the client data before deleting
+        Backup::create([
+            'type' => 'client',
+            'data' => $client->toArray(),
+        ]);
+
+        $client->delete();
+
+        return back()->with('success', 'Client has been permanently deleted and backed up.');
+    }
+
+
 
 
     public function showReviews()
@@ -196,7 +230,8 @@ class AdminSettingsController extends Controller
     public function showArchivedReviews()
     {
         $archivedReviews = Review::where('is_archived', true)->get();
-        return view('admin.archives', compact('archivedReviews'));
+        $archivedClients = Client::where('is_archived', true)->get();
+        return view('admin.archives', compact('archivedReviews', 'archivedClients'));
     }
 
     public function restoreReview($id)
@@ -207,6 +242,8 @@ class AdminSettingsController extends Controller
 
         return redirect()->back()->with('success', 'Review restored successfully!');
     }
+
+
 
     public function showFaqs()
     {
@@ -289,5 +326,106 @@ class AdminSettingsController extends Controller
         );
 
         return redirect()->back()->with('success', 'Downpayment percentage updated successfully!');
+    }
+
+
+    public function mediaSettings()
+    {
+        $videoPath = Setting::where('key', 'welcome_video')->value('value');
+        $bannerPath = Setting::where('key', 'ads_banner')->value('value');
+
+        return view('admin.media-settings', compact('videoPath', 'bannerPath'));
+    }
+
+
+
+
+
+    public function updateMedia(Request $request)
+    {
+        if ($request->hasFile('welcome_video')) {
+            $videoFile = $request->file('welcome_video');
+            $videoName = 'welcome_video.' . $videoFile->getClientOriginalExtension();
+            $videoFile->move(public_path('assets/img'), $videoName);
+
+            Setting::updateOrCreate(
+                ['key' => 'welcome_video'],
+                ['value' => 'assets/img/' . $videoName]
+            );
+        }
+
+        if ($request->hasFile('ads_banner')) {
+            $bannerFile = $request->file('ads_banner');
+            $bannerName = 'ads_banner.' . $bannerFile->getClientOriginalExtension();
+            $bannerFile->move(public_path('assets/img'), $bannerName);
+
+            Setting::updateOrCreate(
+                ['key' => 'ads_banner'],
+                ['value' => 'assets/img/' . $bannerName]
+            );
+        }
+
+        if ($request->hasFile('footer_video')) {
+            $footervideo = $request->file('footer_video');
+            $footerVideoName = 'footer_video.' . $footervideo->getClientOriginalExtension();
+            $footervideo->move(public_path('assets/img'), $footerVideoName);
+
+            Setting::updateOrCreate(
+                ['key' => 'footer_video'],
+                ['value' => 'assets/img/' . $footerVideoName]
+            );
+        }
+
+        return back()->with('success', 'Media updated successfully.');
+    }
+
+    public function deleteReviewFromArchive($id)
+    {
+        $review = Review::where('id', $id)->where('is_archived', true)->firstOrFail();
+
+        Backup::create([
+            'type' => 'review',
+            'data' => $review->toArray(),
+        ]);
+
+        $review->delete();
+
+        return back()->with('success', 'Archived item has been moved to backup.');
+    }
+
+
+    public function showBackups()
+    {
+        $backups = Backup::latest()->get();
+        return view('admin.backup-restore', compact('backups'));
+    }
+
+    public function restoreFromBackup($id)
+    {
+        $backup = Backup::findOrFail($id);
+
+        if ($backup->type === 'review') {
+          
+            $review = Review::create($backup->data);
+            $review->is_archived = true;
+            $review->save();
+        }
+        if ($backup->type === 'client') {
+            $client = Client::create($backup->data);
+            $client->archived_at = true;
+            $client->save();
+        }
+       
+        $backup->delete();
+
+        return back()->with('success', 'Backup restored and review moved back to archives.');
+    }
+
+
+    public function deleteBackup($id)
+    {
+        Backup::destroy($id);
+
+        return back()->with('success', 'Backup deleted permanently.');
     }
 }

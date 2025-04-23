@@ -9,8 +9,8 @@
             <span class="amount">₱{{ number_format($arkilaShare, 2) }}</span>
         </div>
 
-        <form method="GET" action="{{ route('admin.reports.arkila') }}" class="d-flex align-items-center gap-3 mb-4"
-            style="flex-wrap: wrap;">
+        <form method="GET" action="{{ route('admin.reports.arkila_earnings') }}"
+            class="d-flex align-items-center gap-3 mb-4" style="flex-wrap: wrap;">
             <div>
                 <label for="year" class="form-label fw-semibold me-2">Filter by Year:</label>
                 <select name="year" id="year" class="form-select shadow-sm rounded" onchange="this.form.submit()"
@@ -102,7 +102,7 @@
                     legend: { display: false },
                     title: {
                         display: true,
-                      
+
                         color: '#333',
                         font: {
                             size: 18,

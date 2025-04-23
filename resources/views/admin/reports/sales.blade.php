@@ -76,45 +76,71 @@
 
 
         <div class="income-summary">
-            <div class="income-box">
+            <div class="income-box" data-type="Daily">
                 <h4>Daily Income</h4>
                 <p>₱{{ number_format($dailyIncome, 2) }}</p>
             </div>
-            <div class="income-box">
+            <div class="income-box" data-type="Weekly">
                 <h4>Weekly Income</h4>
                 <p>₱{{ number_format($weeklyIncome, 2) }}</p>
             </div>
-            <div class="income-box">
+            <div class="income-box" data-type="Monthly">
                 <h4>Monthly Income</h4>
                 <p>₱{{ number_format($monthlyIncome, 2) }}</p>
             </div>
-            <div class="income-box">
+            <div class="income-box" data-type="Quarterly">
                 <h4>Quarterly Income</h4>
                 <p>₱{{ number_format($quarterlyIncome, 2) }}</p>
             </div>
-            <div class="income-box">
+            <div class="income-box" data-type="Annually">
                 <h4>Annual Income</h4>
                 <p>₱{{ number_format($annualIncome, 2) }}</p>
             </div>
         </div>
+
+
         <canvas id="salesChart" height="100"></canvas>
 
 
 
 
         <form class="row g-3 mb-4" method="GET">
-            <div class="col-md-4">
+            <div class="col-md-3 ">
+                <label for="year" class="form-label fw-semibold text-muted"
+                    style="font-size: 14px; margin-top: 45px; margin-right: 10px;">
+                    Filter by Year
+                </label>
+                <select class="form-select  border-1 rounded-3" name="year" id="year" style="
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                background-color: #fff;
+                padding: 10px 40px;
+                font-size: 1.1rem;
+                height: 38px;
+            ">
+                    @foreach($availableYears as $availableYear)
+                        <option value="{{ $availableYear }}" {{ $availableYear == $year ? 'selected' : '' }}>
+                            {{ $availableYear }}
+                        </option>
+                    @endforeach
+                </select>
+
+            </div>
+
+
+            <div class="col-md-3">
                 <label for="from" class="form-label">From</label>
                 <input type="date" class="form-control" id="from" name="from" value="{{ $from }}">
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="to" class="form-label">To</label>
                 <input type="date" class="form-control" id="to" name="to" value="{{ $to }}">
             </div>
-            <div class="col-md-4 d-flex align-items-end">
+            <div class="col-md-3 d-flex align-items-end">
                 <button type="submit" class="btn btn-primary w-100">Filter</button>
             </div>
         </form>
+
 
         <div class="card">
             <div class="card-header">
@@ -153,7 +179,7 @@
                 <div class="d-flex justify-content-between align-items-center p-3 flex-wrap">
                     <div>
                         Showing {{ $bookings->firstItem() }} to {{ $bookings->lastItem() }} of {{ $bookings->total() }}
-                        entries
+                      
                     </div>
                     <div class="mt-2">
                         {{ $bookings->withQueryString()->links('pagination::bootstrap-5') }}
@@ -179,6 +205,36 @@
 
 
     <script>
+
+        const incomeData = {
+            Daily: {{ $dailyIncome }},
+            Weekly: {{ $weeklyIncome }},
+            Monthly: {{ $monthlyIncome }},
+            Quarterly: {{ $quarterlyIncome }},
+            Annually: {{ $annualIncome }},
+        };
+
+        const incomeColors = {
+            Daily: '#F28B82',
+            Weekly: '#4A90E2',
+            Monthly: '#F5C544',
+            Quarterly: '#A78BC1',
+            Annually: '#317873'
+        };
+
+        document.querySelectorAll('.income-box').forEach(box => {
+            box.addEventListener('click', function () {
+                const type = this.getAttribute('data-type');
+                const newLabel = `${type} Income`;
+                const newValue = incomeData[type];
+                salesChart.data.labels = [type];
+                salesChart.data.datasets[0].data = [newValue];
+                salesChart.data.datasets[0].backgroundColor = [incomeColors[type]];
+                salesChart.options.plugins.title.text = `${type} Income Overview`;
+                salesChart.update();
+            });
+        });
+
         const ctx = document.getElementById('salesChart').getContext('2d');
         const salesChart = new Chart(ctx, {
             type: 'bar',
@@ -187,14 +243,18 @@
                 datasets: [{
                     label: 'Income (₱)',
                     data: [
-                                                                {{ $dailyIncome }},
-                                                                {{ $weeklyIncome }},
-                                                                {{ $monthlyIncome }},
-                                                                {{ $quarterlyIncome }},
+                                        {{ $dailyIncome }},
+                                        {{ $weeklyIncome }},
+                                        {{ $monthlyIncome }},
+                                        {{ $quarterlyIncome }},
                         {{ $annualIncome }}
                     ],
                     backgroundColor: [
-                        '#F28B82', '#4A90E2', '#F5C544', '#A78BC1', '#317873'
+                        '#F28B82',
+                        '#4A90E2',
+                        '#F5C544',
+                        '#A78BC1',
+                        '#317873'
                     ],
                     borderRadius: 8,
                 }]
@@ -239,8 +299,8 @@
                     }
                 }
             }
-
         });
+
     </script>
 
 @endsection

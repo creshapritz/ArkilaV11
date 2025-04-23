@@ -215,9 +215,8 @@
         .sidebar1 {
             background-color: #fff;
             width: 280px;
-            height: 610px;
+            height: 675px;
             padding: 30px;
-
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.08);
         }
 
@@ -378,10 +377,7 @@
                     Feedback and Reviews
                 </a>
 
-                <a href="#" class="sidebar-item {{ request()->is('admin/backup') ? 'active' : '' }}">
-                    Backup and Restore
-                </a>
-
+                
                 <a href="{{ route('admin.archives') }}"
                     class="sidebar-item {{ request()->is('admin/archives') ? 'active' : '' }}">
                     Archives

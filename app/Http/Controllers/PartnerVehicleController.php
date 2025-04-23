@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Mail;
 
 class PartnerVehicleController extends Controller
 {
+
+
+    
     public function index()
     {
         $cars = Car::where('partner_id', auth()->user()->partner_id)->get();
@@ -22,7 +25,11 @@ class PartnerVehicleController extends Controller
         return view('partners_admin.cars.create');
     }
 
-
+    public function showCreateForm()
+    {
+        return view('partners_admin.cars.create');
+    }
+    
 
     public function updateStatus(Request $request, $id)
     {
@@ -84,7 +91,7 @@ class PartnerVehicleController extends Controller
         Mail::to($request->receiver_email)
             ->send(new \App\Mail\NewCarRequest($carRequestData, $request->sender_email));
 
-        // Redirect with a success message
+        
         return redirect()->route('partners_admin.cars.index')->with('success', 'Car request has been submitted and emailed successfully.');
     }
 

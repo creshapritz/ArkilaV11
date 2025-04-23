@@ -274,7 +274,7 @@ class PartnerAdminController extends Controller
         $drivers = Driver::where('partner_id', $partnerId)->get();
 
      
-        return view('partner_admin.drivers.index', compact('drivers'));
+        return view('partners_admin.drivers.index', compact('drivers'));
     }
     public function clients()
     {
@@ -377,16 +377,14 @@ class PartnerAdminController extends Controller
         // Save the driver
         $driver->save();
 
-        // Notify all Super Admins
+       
         $superAdmins = Admin::where('role', 'admin')->get();
         Notification::send($superAdmins, new NewDriverCreated($driver));
 
-        // Redirect to the driver listing page
+       
         return redirect()->route('partner_admin.drivers.index')
             ->with('success', 'Driver created and notification sent to Super Admin.');
     }
-
-    // File upload helper method
     private function uploadFile(Request $request, $field)
     {
         if ($request->hasFile($field)) {

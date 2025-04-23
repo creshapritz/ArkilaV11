@@ -406,8 +406,8 @@
                     ['url' => route('partners_admin.bookings'), 'icon' => 'bx bx-book', 'text' => 'Bookings'],
                     ['url' => route('partners_admin.transaction_history'), 'icon' => 'bx bx-list-check', 'text' => 'Transaction History'],
 
-                    ['url' => route('partners_admin.cars.index'), 'icon' => 'bx bx-car', 'text' => 'Vehicles'],
-                    ['url' => '/partners_admin/gps', 'icon' => 'bx bx-map', 'text' => 'GPS Tracking']
+                    ['url' => route('partners_admin.cars.index'), 'icon' => 'bx bx-car', 'text' => 'Cars'],
+                    
                 ];
             @endphp
             @foreach ($carRentalManagementLinks as $link)
@@ -426,7 +426,7 @@
 
             <h2 class="centered-header">Others</h2>
             <li><i class='bx bx-cog'></i><a href="/sett">Settings</a></li>
-            <li><i class='bx bx-bar-chart'></i><a href="/reports">Reports</a></li>
+            <li><i class='bx bx-bar-chart'></i><a href="">Reports</a></li>
 
             <li class="logout-item">
                 <form action="{{ route('partners_admin.logout') }}" method="POST">

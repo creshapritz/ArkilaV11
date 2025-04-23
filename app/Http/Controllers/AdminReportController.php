@@ -19,22 +19,28 @@ class AdminReportController extends Controller
     {
         $from = $request->input('from');
         $to = $request->input('to');
-
+    
+        // Query the bookings
         $query = Booking::with(['client', 'car'])
             ->whereIn('status', ['Paid', 'Returned']);
-
+    
+        // Apply date range filters if provided
         if ($from && $to) {
             $query->whereBetween('created_at', [$from, $to]);
         }
-
+    
+        // Get the bookings and total revenue
         $bookings = $query->latest()->get();
         $totalRevenue = $bookings->sum('amount');
-
+    
+        // Pass data to the PDF view
         $pdf = Pdf::loadView('admin.reports.sales-pdf', compact('bookings', 'totalRevenue', 'from', 'to'));
+    
+        // Generate and download the PDF
         $filename = 'ARKILA_Sales_Report_' . now()->format('Y_m_d_Hi') . '.pdf';
-
         return $pdf->download($filename);
     }
+    
 
 
 
@@ -99,93 +105,31 @@ class AdminReportController extends Controller
         return $pdf->download("{$client->first_name}_bookings_report_$date.pdf");
     }
 
-    public function exportSpecificCarPDF($id)
-    {
-        $car = Car::with([
-            'bookings' => function ($query) {
-                $query->latest();
-            }
-        ])->findOrFail($id);
 
-        $carData = [
-            'id' => $car->id,
-            'type' => $car->type,
-            'brand' => $car->brand,
-            'platenum' => $car->platenum,
-            'last_booking' => optional($car->bookings->first())->created_at,
-            'total_bookings' => $car->bookings->count(),
-        ];
-
-        $bookings = $car->bookings;
-
-        $pdf = PDF::loadView('admin.reports.pdf.single-car', [
-            'car' => $carData,
-            'bookings' => $bookings,
-            'dateNow' => Carbon::now()->format('F d, Y'),
-        ])->setPaper('a4', 'landscape');
-
-        return $pdf->download("car-{$car->id}-report.pdf");
-    }
-
-
-
-    public function exportAllCarsPDF(Request $request)
-    {
-        $search = $request->input('search');
-        $dateNow = Carbon::now()->format('F d, Y');
-        $dateFilename = Carbon::now()->format('Y-m-d');
-
-        $cars = Car::with([
-            'bookings' => function ($query) {
-                $query->latest();
-            }
-        ])
-            ->when($search, function ($query, $search) {
-                $query->where('type', 'like', "%{$search}%")
-                    ->orWhere('brand', 'like', "%{$search}%");
-            })
-            ->get()
-            ->map(function ($car) {
-                return [
-                    'id' => $car->id,
-                    'type' => $car->type,
-                    'brand' => $car->brand,
-                    'platenum' => $car->platenum,
-                    'last_booking' => optional($car->bookings->first())->created_at,
-                    'total_bookings' => $car->bookings->count(),
-                ];
-            });
-
-        $pdf = PDF::loadView('admin.reports.pdf.all-cars', [
-            'cars' => $cars,
-            'dateNow' => $dateNow
-        ])->setPaper('a4', 'landscape');
-
-        return $pdf->download("car-report-{$dateFilename}.pdf");
-    }
 
     public function exportArkilaReport(Request $request)
     {
         $year = $request->input('year', now()->year);
-
-        $bookings = Booking::where('status', 'paid')
+    
+        $bookings = Booking::whereIn('status', ['paid', 'returned']) // <-- updated line
             ->whereYear('created_at', $year)
             ->with(['client', 'car'])
             ->orderBy('created_at', 'desc')
             ->get();
-
+    
         $arkilaShare = $bookings->sum(function ($booking) {
             return $booking->amount * 0.20;
         });
-
+    
         $pdf = Pdf::loadView('admin.reports.arkila_pdf', [
             'bookings' => $bookings,
             'year' => $year,
             'arkilaShare' => $arkilaShare,
         ])->setPaper('a4', 'landscape');
-
+    
         return $pdf->download('arkila_earnings_report_' . $year . '.pdf');
     }
+    
     public function exportDriverReportPdf(Request $request)
     {
         $from = $request->input('from');

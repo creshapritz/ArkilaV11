@@ -75,7 +75,7 @@
             background: rgba(255, 255, 255, 0.8);
         }
 
-        /* Chatbot Container active state */
+     
         #chatbot-container.active {
             opacity: 1;
             transform: translateY(0);

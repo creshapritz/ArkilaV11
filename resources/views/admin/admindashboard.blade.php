@@ -689,39 +689,43 @@
         </section>
 
         <section class="car-ov">
-            <div class="car-ov-container">
-                <h3>Car Overview</h3>
-                <div class="trycon">
-                    @if (isset($cars) && $cars->filter(fn($car) => !$car->archived && $car->status != 'maintenance')->isNotEmpty())
-                        @foreach ($cars->filter(fn($car) => !$car->archived && $car->status != 'maintenance')->take(4) as $car)
-                            <div class="car-bg">
-                                <div class="car-header">
-                                    <div class="car-details">
-                                        <h3 class="car-name">{{$car->name}}</h3>
-                                        <p class="car-brand">{{$car->brand}}</p>
-                                        <img src="{{asset($car->primary_image)}}" alt="{{$car->name}}" class="car-image"
-                                            loading="lazy">
-                                    </div>
-                                </div>
-                                <section class="car-info">
-                                    <p><i class='bx bx-user'></i> {{ $car->seating_capacity }}</p>
-                                    <p><i class='bx bx-briefcase'></i> {{ $car->num_bags }}</p>
-                                    <p><i class='bx bx-gas-pump'></i> {{ $car->gas_type }}</p>
-                                    <p><i class='bx bx-cog'></i> {{ $car->transmission }}</p>
-                                </section>
-                                <div class="view-button-container">
-                                    <a href="{{ route('vehicles.show', ['id' => $car->id]) }}" class="view-icon">
-                                        <button class="view-button">View</button>
-                                    </a>
-                                </div>
+    <div class="car-ov-container">
+        <h3>Car Overview</h3>
+        <div class="trycon">
+            @php
+                $availableCars = isset($cars) ? $cars->filter(fn($car) => !$car->archived && $car->status !== 'maintenance')->take(4) : collect();
+            @endphp
+
+            @if ($availableCars->isNotEmpty())
+                @foreach ($availableCars as $car)
+                    <div class="car-bg">
+                        <div class="car-header">
+                            <div class="car-details">
+                                <h3 class="car-name">{{ $car->name }}</h3>
+                                <p class="car-brand">{{ $car->brand }}</p>
+                                <img src="{{ asset($car->primary_image) }}" alt="{{ $car->name }}" class="car-image" loading="lazy">
                             </div>
-                        @endforeach
-                    @else
-                        <p>No available cars found.</p>
-                    @endif
-                </div>
-            </div>
-        </section>
+                        </div>
+                        <section class="car-info">
+                            <p><i class='bx bx-user'></i> {{ $car->seating_capacity }}</p>
+                            <p><i class='bx bx-briefcase'></i> {{ $car->num_bags }}</p>
+                            <p><i class='bx bx-gas-pump'></i> {{ $car->gas_type }}</p>
+                            <p><i class='bx bx-cog'></i> {{ $car->transmission }}</p>
+                        </section>
+                        <div class="view-button-container">
+                            <a href="{{ route('vehicles.show', ['id' => $car->id]) }}" class="view-icon">
+                                <button class="view-button">View</button>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <p>No available cars found.</p>
+            @endif
+        </div>
+    </div>
+</section>
+
 
 
 

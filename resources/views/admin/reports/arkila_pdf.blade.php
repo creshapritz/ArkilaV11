@@ -99,7 +99,7 @@
     </div>
 
     <div class="summary">
-        <strong>Total ARKILA Earnings (20% of all paid bookings):</strong>
+        <strong>Total ARKILA Revenue (20% of all paid bookings):</strong>
         <span>₱{{ number_format($arkilaShare, 2) }}</span>
     </div>
 

@@ -225,7 +225,7 @@ class ClientController extends Controller
                 'status' => 'pending',
             ]));
 
-            // Clear session data
+            
             Session::forget('registration_data');
             Session::forget('verification_code');
 
@@ -242,7 +242,9 @@ class ClientController extends Controller
 
     public function index()
     {
-        $clients = Client::all(); // Fetch all clients from the database
+        $clients = Client::all(); 
+        $clients = Client::whereNull('archived_at')->get();
+
         return view('admin.clients', compact('clients'));
     }
 
@@ -254,7 +256,7 @@ class ClientController extends Controller
     public function archive($id)
     {
         $client = Client::findOrFail($id);
-        $client->delete(); // This removes the client (use SoftDeletes if needed)
+        $client->delete(); 
 
         return redirect()->route('admin.clients')->with('success', 'Client archived successfully.');
     }
@@ -262,7 +264,7 @@ class ClientController extends Controller
     public function verify($id)
     {
         $client = Client::findOrFail($id);
-        $client->status = 'verified'; // Adjust this as per your status column
+        $client->status = 'verified'; 
         $client->save();
 
         return redirect()->route('admin.clients')->with('success', 'Client verified successfully!');
@@ -288,7 +290,7 @@ class ClientController extends Controller
     public function unblockClient($id)
     {
         $client = Client::findOrFail($id);
-        $client->status = 'verified'; // or 'active', depending on your system
+        $client->status = 'verified'; 
         $client->save();
     
         return redirect()->back()->with('success', 'Client has been unblocked.');

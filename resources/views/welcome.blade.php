@@ -347,9 +347,8 @@
 
         <!---------------------------------------- VIDEO1 ----------------------------------------------------------------------->
         <section class="home">
-            <video autoplay muted loop id="background-video">
-                <source src="{{ asset('assets/img/car2.mp4') }}" type="video/mp4">
-                Your browser does not support the video tag.
+        <video autoplay muted loop id="background-video">
+                <source src="{{ asset($videoPath) }}" type="video/mp4">
             </video>
             <div class="video-overlay"></div>
             <div class="home-content">
@@ -359,7 +358,7 @@
 
         <!---------------------------------------------------------- IMG1 ------------------------------------------------------->
         <div class="content">
-            <img src="<?php echo e(asset('assets/img/adver.png')); ?>" alt="Advertisement" class="advertisement">
+        <img src="{{ asset($bannerPath) }}" alt="Advertisement" class="advertisement">
         </div>
 
         <!--------------------------------------------------- AVAILABLE CAR BRANDS ----------------------------------------------->
@@ -602,7 +601,7 @@
         <!----------------------------------------------------- VIDEO 2 -------------------------------------------------------->
         <section class="video2">
             <div class="video2">
-                <video src="<?php echo e(asset('assets/img/output.mp4')); ?>" autoplay loop muted></video>
+            <video src="{{ asset($footervideoPath) }}" autoplay loop muted></video>
             </div>
         </section>
 

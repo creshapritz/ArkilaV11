@@ -80,7 +80,7 @@
         <!-- Left Sidebar Section -->
         <div class="settings-sidebar">
             <a href="{{ route('settings.profile-management') }}" class="settings-btn">Profile Management</a>
-            <a href="{{ route('settings.account-activity') }}" class="settings-btn">Account Activity</a>
+            <!-- <a href="{{ route('settings.account-activity') }}" class="settings-btn">Account Activity</a> -->
             <a href="{{ route('settings.privacy-security') }}" class="settings-btn">Privacy and Security</a>
             <a href="{{ route('settings.help-faqs') }}" class="settings-btn">Help and FAQs</a>
         </div>
@@ -92,7 +92,7 @@
 
     <script>
         document.getElementById('logout-link').addEventListener('click', function (e) {
-            e.preventDefault(); // Prevent the default link action
+            e.preventDefault(); 
 
             Swal.fire({
                 title: 'Are you sure you want to logout?',

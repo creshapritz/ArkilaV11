@@ -21,6 +21,10 @@
                 <a class="nav-link {{ request()->routeIs('admin.about-us-settings') ? 'active' : '' }}"
                     href="{{ route('admin.about-us-settings') }}">About Us</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.media-settings') ? 'active' : '' }}"
+                    href="{{ route('admin.media-settings') }}">Media Settings</a>
+            </li>
         </ul>
         <h5 class="fw-bold">Manage FAQs</h5>
 

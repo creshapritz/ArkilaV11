@@ -20,10 +20,18 @@ class ReportController extends Controller
     {
         $from = $request->input('from');
         $to = $request->input('to');
+        $year = $request->input('year') ?? Carbon::now()->year;
 
+        // Get list of available years for dropdown
+        $availableYears = Booking::selectRaw('YEAR(created_at) as year')
+            ->whereIn('status', ['Paid', 'Returned'])
+            ->distinct()
+            ->pluck('year')
+            ->sortDesc();
 
         $query = Booking::with(['client', 'car'])
-            ->whereIn('status', ['Paid', 'Returned']);
+            ->whereIn('status', ['Paid', 'Returned'])
+            ->whereYear('created_at', $year);
 
         if ($from && $to) {
             $query->whereBetween('created_at', [$from, $to]);
@@ -32,30 +40,35 @@ class ReportController extends Controller
         $bookings = $query->latest()->paginate(10);
         $totalRevenue = $bookings->sum('amount');
 
-
+        // Start of time frames for the selected year
         $today = Carbon::today();
         $startOfWeek = Carbon::now()->startOfWeek();
         $startOfMonth = Carbon::now()->startOfMonth();
         $startOfQuarter = Carbon::now()->firstOfQuarter();
-        $startOfYear = Carbon::now()->startOfYear();
+        $startOfYear = Carbon::createFromDate($year, 1, 1);
+        $endOfYear = Carbon::createFromDate($year, 12, 31)->endOfDay();
 
         $dailyIncome = Booking::whereDate('created_at', $today)
+            ->whereYear('created_at', $year)
             ->whereIn('status', ['Paid', 'Returned'])
             ->sum('amount');
 
         $weeklyIncome = Booking::whereBetween('created_at', [$startOfWeek, now()])
+            ->whereYear('created_at', $year)
             ->whereIn('status', ['Paid', 'Returned'])
             ->sum('amount');
 
         $monthlyIncome = Booking::whereBetween('created_at', [$startOfMonth, now()])
+            ->whereYear('created_at', $year)
             ->whereIn('status', ['Paid', 'Returned'])
             ->sum('amount');
 
         $quarterlyIncome = Booking::whereBetween('created_at', [$startOfQuarter, now()])
+            ->whereYear('created_at', $year)
             ->whereIn('status', ['Paid', 'Returned'])
             ->sum('amount');
 
-        $annualIncome = Booking::whereBetween('created_at', [$startOfYear, now()])
+        $annualIncome = Booking::whereBetween('created_at', [$startOfYear, $endOfYear])
             ->whereIn('status', ['Paid', 'Returned'])
             ->sum('amount');
 
@@ -64,6 +77,8 @@ class ReportController extends Controller
             'totalRevenue',
             'from',
             'to',
+            'year',
+            'availableYears',
             'dailyIncome',
             'weeklyIncome',
             'monthlyIncome',
@@ -114,24 +129,21 @@ class ReportController extends Controller
         $year = $request->input('year', now()->year);
 
         $bookings = Booking::with(['car.partner'])
-            ->where('status', 'paid')
+            ->whereIn('status', ['paid', 'returned'])
             ->whereYear('created_at', $year)
             ->paginate(10);
-
 
         $arkilaShare = $bookings->sum(fn($booking) => $booking->amount * 0.20);
 
         $monthlyEarnings = [];
         foreach (range(1, 12) as $month) {
             $monthlyEarnings[date('F', mktime(0, 0, 0, $month, 10))] = $bookings->filter(
-                fn($booking) =>
-                $booking->created_at->month == $month
+                fn($booking) => $booking->created_at->month == $month
             )->sum(fn($booking) => $booking->amount * 0.20);
         }
 
-
         $availableYears = Booking::selectRaw('YEAR(created_at) as year')
-            ->where('status', 'paid')
+            ->whereIn('status', ['paid', 'returned'])
             ->groupBy('year')
             ->orderBy('year', 'desc')
             ->pluck('year');
@@ -144,6 +156,7 @@ class ReportController extends Controller
             'availableYears'
         ));
     }
+
 
     public function clients(Request $request)
     {
@@ -182,18 +195,18 @@ class ReportController extends Controller
     {
         $driversQuery = \App\Models\Driver::with(['driverBookings', 'partner'])
             ->whereHas('driverBookings');
-    
+
         // Filter by company name if provided
         if ($request->has('company_name') && $request->company_name != 'all') {
             $driversQuery->whereHas('partner', function ($query) use ($request) {
                 $query->where('company_name', $request->company_name);
             });
         }
-    
+
         // Paginate the drivers (10 per page for example)
         $drivers = $driversQuery->paginate(10)->through(function ($driver) {
             $lastBooking = $driver->driverBookings->sortByDesc('created_at')->first();
-    
+
             return [
                 'name' => $driver->name,
                 'company_name' => optional($driver->partner)->company_name ?? 'N/A',
@@ -202,12 +215,12 @@ class ReportController extends Controller
                 'last_booking' => optional($lastBooking)->created_at,
             ];
         });
-    
+
         $companies = \App\Models\Partner::all()->pluck('company_name');
-    
+
         return view('admin.reports.drivers', compact('drivers', 'companies'));
     }
-    
+
 
 
 
@@ -216,42 +229,44 @@ class ReportController extends Controller
 
 
     public function cars(Request $request)
-{
-    $search = $request->input('search');
+    {
+        $search = $request->input('search');
 
-    $query = Car::withCount('bookings') // Add this to count bookings
-        ->with(['bookings' => function ($query) {
-            $query->latest();
-        }])
-        ->when($search, function ($query, $search) {
-            $query->where('type', 'like', "%{$search}%")
-                ->orWhere('brand', 'like', "%{$search}%");
-        })
-        ->orderByDesc('bookings_count'); // Sort from most to least booked
+        $query = Car::withCount('bookings') // Add this to count bookings
+            ->with([
+                'bookings' => function ($query) {
+                    $query->latest();
+                }
+            ])
+            ->when($search, function ($query, $search) {
+                $query->where('type', 'like', "%{$search}%")
+                    ->orWhere('brand', 'like', "%{$search}%");
+            })
+            ->orderByDesc('bookings_count'); // Sort from most to least booked
 
-    $paginatedCars = $query->paginate(10)->withQueryString();
+        $paginatedCars = $query->paginate(10)->withQueryString();
 
-    $cars = $paginatedCars->getCollection()->map(function ($car) {
-        return [
-            'id' => $car->id,
-            'type' => $car->type,
-            'brand' => $car->brand,
-            'platenum' => $car->platenum,
-            'last_booking' => optional($car->bookings->first())->created_at,
-            'total_bookings' => $car->bookings_count,
-        ];
-    });
+        $cars = $paginatedCars->getCollection()->map(function ($car) {
+            return [
+                'id' => $car->id,
+                'type' => $car->type,
+                'brand' => $car->brand,
+                'platenum' => $car->platenum,
+                'last_booking' => optional($car->bookings->first())->created_at,
+                'total_bookings' => $car->bookings_count,
+            ];
+        });
 
-    $carsPaginated = new LengthAwarePaginator(
-        $cars,
-        $paginatedCars->total(),
-        $paginatedCars->perPage(),
-        $paginatedCars->currentPage(),
-        ['path' => request()->url(), 'query' => request()->query()]
-    );
+        $carsPaginated = new LengthAwarePaginator(
+            $cars,
+            $paginatedCars->total(),
+            $paginatedCars->perPage(),
+            $paginatedCars->currentPage(),
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
 
-    return view('admin.reports.cars', ['cars' => $carsPaginated]);
-}
+        return view('admin.reports.cars', ['cars' => $carsPaginated]);
+    }
 
 
 }

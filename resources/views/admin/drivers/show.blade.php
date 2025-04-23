@@ -164,9 +164,12 @@
             <h2>Driver Details</h2>
 
             <div class="row">
-                <div class="col-md-4 text-center">
-                <img src="{{ asset('uploads/drivers/' . $driver->profile_picture) }}" alt="Profile Picture">
-                </div>
+            <div class="col-md-4 text-center">
+    <img src="{{ asset($driver->profile_picture) }}" alt="Profile Picture" 
+         class="rounded-circle img-fluid" 
+         style="width: 150px; height: 150px; object-fit: cover;">
+</div>
+
 
                 <div class="col-md-8">
                     <h4>{{ $driver->name }}</h4>

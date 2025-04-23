@@ -1,3 +1,6 @@
+@php
+    $privacy = \App\Models\PrivacyLegal::where('key', 'privacy_policy')->value('value');
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 
@@ -349,10 +352,10 @@
                         <div class="form-group new-terms">
                             <input type="checkbox" id="agree-privacy" class="new-custom-checkbox" name="agree_privacy"
                                 disabled>
-                            <label for="agree-privacy">
-                                I have read and agreed to the <a href="{{ asset('documents/PP_ARKILA.pdf') }}"
-                                    target="_blank" id="privacy-link" > Privacy Policy</a>.
-                            </label>
+                                <label for="agree-privacy">
+                                    I have read and agreed to the <a href="{{ $privacy }}" target="_blank"
+                                        id="privacy-link">Privacy and Policy</a>
+                                </label>
 
                         </div>
                         <p class="note" id="privacy-note" style="color: red; ">Note: Please click the link to read the Privacy Policy for
